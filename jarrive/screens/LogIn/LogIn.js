@@ -1,103 +1,102 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, Pressable, TextInput, View, Image } from "react-native";
+import {
+  Text,
+  Pressable,
+  TextInput,
+  View,
+  Image,
+  ImageBackground,
+} from "react-native";
+import Checkbox from "expo-checkbox";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 import CustomText from "../../components/CustomText";
+import EmailPassword from "./EmailPassword";
+import PasswordOptions from "./PasswordOptions";
+import SsoLogin from "./SsoLogin";
 
 const LogInScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+    rememberPassword: false,
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const logo = require("../../assets/jarrive_logo.png");
   const googleLogo = require("../../assets/google_logo.png");
+  const backgroundImage = require("../../assets/login_background.jpg");
+
+  // Change handlers
+  const onChangeEmail = (e) => {
+    setUserInfo({ ...userInfo, email: e.target.value });
+  };
+  const onChangePassword = (e) => {
+    setUserInfo({ ...userInfo, password: e.target.value });
+  };
+  const onChangeCheckbox = (e) => {
+    setUserInfo({ ...userInfo, rememberPassword: !userInfo.rememberPassword });
+  };
+
+  // Submit handlers
+  const onPressRecoverPassword = () => {
+    /** */
+  };
+  const onPressLogin = () => {
+    /** */
+  };
+  const onPressRegister = () => {
+    /** */
+  };
+  const onPressSsoButton = () => {
+    /** */
+  };
 
   return (
     <>
       <StatusBar style="auto" />
-      <View style={styles.container}>
-        <Image
-          source={logo}
-          style={{
-            marginTop: 70,
-            marginBottom: 50,
-            width: 170,
-          }}
-          resizeMode="contain"
+      <ImageBackground source={backgroundImage} style={styles.container}>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.background}
+          resizeMode="cover"
         />
+        <Image source={logo} style={styles.logoImage} resizeMode="contain" />
         <View style={styles.loginContainer}>
+          <CustomText style={styles.title}>Entre na sua conta</CustomText>
           <View>
-            <CustomText>
-              <Text style={styles.description}>Entre na sua conta</Text>
-            </CustomText>
-            <TextInput
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              style={styles.input}
-              placeholder="E-mail"
+            <EmailPassword
+              email={userInfo.email}
+              password={userInfo.password}
+              onChangeEmail={onChangeEmail}
+              onChangePassword={onChangePassword}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
             />
-            <View style={styles.passwordArea}>
-              <TextInput
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                style={styles.passwordInput}
-                placeholder="Senha"
-                secureTextEntry={!showPassword}
-              />
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
-                {showPassword ? (
-                  <Ionicons name="eye-off-outline" color="#000" size={25} />
-                ) : (
-                  <Ionicons name="eye-outline" color="#000" size={25} />
-                )}
-              </Pressable>
-            </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-              }}
-            >
-              <Text>Lembrar senha</Text>
-              <Text>Recuperar senha</Text>
-            </View>
-            <Pressable style={styles.button}>
-              <Text style={{ color: "white" }}>Entrar</Text>
+            <PasswordOptions
+              rememberPassword={userInfo.rememberPassword}
+              onChangeCheckbox={onChangeCheckbox}
+              onPressRecoverPassword={onPressRecoverPassword}
+            />
+            <Pressable onPress={onPressLogin} style={styles.loginButton}>
+              <Text style={styles.loginButtonText}>Entrar</Text>
             </Pressable>
           </View>
-          <View style={styles.otherLoginOptions}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
-              <View>
-                <Text
-                  style={{ width: 50, textAlign: "center", color: "white" }}
-                >
-                  OU
-                </Text>
-              </View>
-              <View style={{ flex: 1, height: 1, backgroundColor: "white" }} />
-            </View>
-            <Pressable style={styles.ssoButton}>
-              <Image source={googleLogo} />
-              <Text style={{ color: "#4354EF", fontWeight: "bold" }}>
-                Entre com Google
-              </Text>
-            </Pressable>
-            <Text style={{ marginTop: 20, color: "white" }}>
-              Não tem conta?{" "}
-              <Text style={{ textDecorationLine: "underline" }}>
+          <View style={styles.registerContainer}>
+            <Text style={styles.registerLabel}>Não tem conta? </Text>
+            <Pressable onPress={onPressRegister}>
+              <Text style={styles.registerLabel.underlined}>
                 Cadastre-se aqui.
               </Text>
-            </Text>
+            </Pressable>
           </View>
+          <SsoLogin
+            googleLogo={googleLogo}
+            onPressSsoButton={onPressSsoButton}
+          />
         </View>
-      </View>
+      </ImageBackground>
     </>
   );
 };
