@@ -2,14 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import {
   Text,
   Pressable,
-  TextInput,
   View,
   Image,
   ImageBackground,
 } from "react-native";
-import Checkbox from "expo-checkbox";
 import React, { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 import CustomText from "../../components/CustomText";
 import EmailPassword from "./EmailPassword";
