@@ -12,6 +12,9 @@ import CustomText from "../../components/CustomText";
 import EmailPassword from "./EmailPassword";
 import PasswordOptions from "./PasswordOptions";
 import SsoLogin from "./SsoLogin";
+import logo from "../../assets/jarrive_logo.png";
+import googleLogo from "../../assets/google_logo.png";
+import backgroundImage from "../../assets/login_background.jpg";
 
 const LogInScreen = () => {
   const [userInfo, setUserInfo] = useState({
@@ -20,10 +23,6 @@ const LogInScreen = () => {
     rememberPassword: false,
   });
   const [showPassword, setShowPassword] = useState(false);
-
-  const logo = require("../../assets/jarrive_logo.png");
-  const googleLogo = require("../../assets/google_logo.png");
-  const backgroundImage = require("../../assets/login_background.jpg");
 
   // Change handlers
   const onChangeEmail = (e) => {
@@ -83,7 +82,7 @@ const LogInScreen = () => {
           <View style={styles.registerContainer}>
             <Text style={styles.registerLabel}>Não tem conta? </Text>
             <Pressable onPress={onPressRegister}>
-              <Text style={styles.registerLabel.underlined}>
+              <Text style={styles.registerLabelUnderlined}>
                 Cadastre-se aqui.
               </Text>
             </Pressable>

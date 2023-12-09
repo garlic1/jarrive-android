@@ -10,8 +10,7 @@ export const styles = StyleSheet.create({
   container: {
     display: "flex",
     alignItems: "center",
-    flexGrow: 1,
-    backgroundColor: "red",
+    flexGrow: 1
   },
   loginContainer: {
     backgroundColor: "#4354EF",
@@ -96,11 +95,11 @@ export const styles = StyleSheet.create({
   registerLabel: {
     height: 20,
     color: "white",
-    underlined: {
-      height: 20,
-      color: "white",
-      textDecorationLine: "underline",
-    }
+  },
+  registerLabelUnderlined: {
+    height: 20,
+    color: "white",
+    textDecorationLine: "underline",
   },
   dividerContainer: {
     flexDirection: "row",
