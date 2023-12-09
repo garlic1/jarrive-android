@@ -2,7 +2,7 @@ import ChatBody from "./ChatBody";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import thomas from "../../assets/thomas.jpg";
-import { View, Text, ImageBackground } from "react-native";
+import { View } from "react-native";
 import thomasTrain from "../../assets/thomas_train.png";
 import postaleImage from "../../assets/postcard_preview.jpg";
 
@@ -15,21 +15,25 @@ const messages = {
   bonjourOuBonsoir: {
     variant: "choice",
     choices: ["bonjour", "bonsoir"],
-    content: "bonjour ☀️? ou bonsoir 🌙?",
-    translation: {
-      bonjour: "bom dia",
-      bonsoir: "boa noite",
-    },
+    content: [
+      {
+        value: "bonjour ☀️?",
+        translation: "bom dia",
+      },
+      { value: "ou" },
+      {
+        value: "bonsoir 🌙?",
+        translation: "boa noite",
+      },
+    ],
   },
   bonjour: {
     variant: "text",
-    content: "Bonjour, alors!",
-    translation: "Bom dia, então!",
+    content: [{ value: "Bonjour, alors!", translation: "Bom dia, então!" }],
   },
   bonsoir: {
     variant: "text",
-    content: "Bonsoir, alors!",
-    translation: "Boa noite, então!",
+    content: [{ value: "Bonsoir, alors!", translation: "Boa noite, então!" }],
   },
   thomasTrain: {
     variant: "image",
@@ -37,36 +41,42 @@ const messages = {
   },
   jemapelle: {
     variant: "text",
-    description: "Je m'appelle Thomas, e você?",
-    translation: "Meu nome é",
+    content: [
+      { value: "Je m'appelle", translation: "Meu nome é" },
+      { value: "Thomas, e você?" },
+    ],
   },
   enchante: {
     variant: "text",
-    description: "Enchanté! 😽😽",
-    translation: "Encantado",
+    content: [{ value: "Enchanté! 😽😽", translation: "Encantado! 😽😽" }],
   },
   humanOuChat: {
     variant: "choice",
-    description: "Human ou chat?",
+    content: [
+      { value: "Human", translation: "Humano" },
+      { value: "ou" },
+      { value: "chat?", translation: "gato" },
+    ],
     choices: ["human 🖖🏻", "chat 😺"],
-    translation: {
-      human: "humano",
-      chat: "gato",
-    },
   },
   audio: {
     variant: "audio",
   },
   naoEntendeu: {
     variant: "text",
-    content: "Você não entendeu? Alors, je suis un chat, mas você não 😑",
-    translation: "Então",
+    content: [
+      { value: "Você não entendeu?" },
+      { value: "Alors", translation: "Então" },
+      { value: ", je suis un chat, mas você não 😑" },
+    ],
   },
   entregar: {
     variant: "text",
-    content:
-      "Além de chat, je suis carteiro e preciso entregar isso aqui, me ajuda?",
-    translation: "eu sou",
+    content: [
+      { value: "Além de chat, " },
+      { value: "je suis", translation: "eu sou" },
+      { value: "carteiro e preciso entregar isso aqui, me ajuda?" },
+    ],
   },
   postaleImage: {
     variant: "image",
@@ -74,28 +84,28 @@ const messages = {
   },
   postaleChoice: {
     variant: "choice",
-    content: "Você sabe o que é isso?",
+    content: [{ value: "Você sabe o que é isso?" }],
     choices: ["Train 🚂", "Croissant 🥐", "Carte Postale ✉️"],
   },
   cartePostaleChoice: {
     variant: "text",
-    content: "Très bien! Une carte postale.",
-    translation: {
-      tresBien: "Muito bem",
-      uneCartePostale: "Um cartão postal.",
-    },
+    content: [
+      { value: "Très bien!", translation: "Muito bem" },
+      { value: "Une carte postale.", translation: "Um cartão postal." },
+    ],
   },
   vamosLer: {
     variant: "choice",
-    content: "Vamos ler o que tá escrito? 😸😸",
+    content: [{ value: "Vamos ler o que tá escrito? 😸😸" }],
     choices: ["Oui 👍", "Non 👎"],
   },
   recusouLer: {
     variant: "text",
-    content: "Je suis curieux! 😹",
-    translation: {
-      curieux: "curioso",
-    },
+    content: [
+      { value: "Je suis" },
+      { value: "curieux", translation: "curioso" },
+      { value: "! 😹" },
+    ],
   },
 };
 
