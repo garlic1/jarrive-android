@@ -1,12 +1,12 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StatusBar } from "react-native";
 
 const chatHeaderStyles = {
   container: {
     display: "flex",
     flexDirection: "row",
     paddingLeft: 25,
-    paddingTop: 20,
-    height: 70,
+    paddingTop: StatusBar.currentHeight + 10|| 10,
+    height: StatusBar.currentHeight + 60 || 60,
     gap: 8,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,

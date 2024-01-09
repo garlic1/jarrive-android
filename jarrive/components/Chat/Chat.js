@@ -2,125 +2,74 @@ import ChatBody from "./ChatBody";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import thomas from "../../assets/thomas.jpg";
-import { View } from "react-native";
-import thomasTrain from "../../assets/thomas_train.png";
-import postaleImage from "../../assets/postcard_preview.jpg";
-
-const messages = {
-  salut: {
-    variant: "text",
-    content: "Salut? Quis est la?",
-    translation: "Oi? Quem está aí?",
-  },
-  bonjourOuBonsoir: {
-    variant: "choice",
-    choices: ["bonjour", "bonsoir"],
-    content: [
-      {
-        value: "bonjour ☀️?",
-        translation: "bom dia",
-      },
-      { value: "ou" },
-      {
-        value: "bonsoir 🌙?",
-        translation: "boa noite",
-      },
-    ],
-  },
-  bonjour: {
-    variant: "text",
-    content: [{ value: "Bonjour, alors!", translation: "Bom dia, então!" }],
-  },
-  bonsoir: {
-    variant: "text",
-    content: [{ value: "Bonsoir, alors!", translation: "Boa noite, então!" }],
-  },
-  thomasTrain: {
-    variant: "image",
-    src: thomasTrain,
-  },
-  jemapelle: {
-    variant: "text",
-    content: [
-      { value: "Je m'appelle", translation: "Meu nome é" },
-      { value: "Thomas, e você?" },
-    ],
-  },
-  enchante: {
-    variant: "text",
-    content: [{ value: "Enchanté! 😽😽", translation: "Encantado! 😽😽" }],
-  },
-  humanOuChat: {
-    variant: "choice",
-    content: [
-      { value: "Human", translation: "Humano" },
-      { value: "ou" },
-      { value: "chat?", translation: "gato" },
-    ],
-    choices: ["human 🖖🏻", "chat 😺"],
-  },
-  audio: {
-    variant: "audio",
-  },
-  naoEntendeu: {
-    variant: "text",
-    content: [
-      { value: "Você não entendeu?" },
-      { value: "Alors", translation: "Então" },
-      { value: ", je suis un chat, mas você não 😑" },
-    ],
-  },
-  entregar: {
-    variant: "text",
-    content: [
-      { value: "Além de chat, " },
-      { value: "je suis", translation: "eu sou" },
-      { value: "carteiro e preciso entregar isso aqui, me ajuda?" },
-    ],
-  },
-  postaleImage: {
-    variant: "image",
-    src: postaleImage,
-  },
-  postaleChoice: {
-    variant: "choice",
-    content: [{ value: "Você sabe o que é isso?" }],
-    choices: ["Train 🚂", "Croissant 🥐", "Carte Postale ✉️"],
-  },
-  cartePostaleChoice: {
-    variant: "text",
-    content: [
-      { value: "Très bien!", translation: "Muito bem" },
-      { value: "Une carte postale.", translation: "Um cartão postal." },
-    ],
-  },
-  vamosLer: {
-    variant: "choice",
-    content: [{ value: "Vamos ler o que tá escrito? 😸😸" }],
-    choices: ["Oui 👍", "Non 👎"],
-  },
-  recusouLer: {
-    variant: "text",
-    content: [
-      { value: "Je suis" },
-      { value: "curieux", translation: "curioso" },
-      { value: "! 😹" },
-    ],
-  },
-};
+import MESSAGES_CONST from "../../utils/messages.json";
+import ORDER from "../../utils/order.json";
+import { Pressable, View, Text } from "react-native";
+import { useEffect, useState } from "react";
 
 const Chat = () => {
-  return (
-    <View>
-      <ChatHeader
-        profileImage={thomas}
-        name={"Issa - Le tuteur de Thomas"}
-        status={"en écrivant..."}
-      />
+  const [messages, _] = useState([MESSAGES_CONST["salut"]]);
+  const [previousMessage, setPreviousMessage] = useState("salut");
+  const [currentMessage, setCurrentMessage] = useState("bonjourOuBonsoir");
+  const [userChoice, setUserChoice] = useState("bonjour");
 
-      <ChatBody />
-      {/* <ChatInput /> */}
-    </View>
+  const getCurrentMessage = () => {
+    {
+      console.log("previous: ", previousMessage);
+    }
+    {
+      console.log("current: ", currentMessage);
+    }
+    const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
+    switch (previousMessageVariant) {
+      case "text":
+      case "image":
+      case "audio":
+      case "input":
+        setPreviousMessage(currentMessage);
+        setCurrentMessage(ORDER[currentMessage]);
+        messages.push(MESSAGES_CONST[currentMessage]);
+        break;
+      case "choice":
+        {
+          const currentMessageChoice = ORDER[userChoice];
+          console.log("currentMessageChoice", currentMessageChoice);
+          console.log("userChoice", userChoice);
+          setPreviousMessage(userChoice);
+          setCurrentMessage(currentMessageChoice);
+          messages.push(MESSAGES_CONST[currentMessageChoice]);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  // setTimeout(()=>getCurrentMessage(),1000);
+
+  useEffect(() => {
+    // const intervalHandle = setInterval(()=>getCurrentMessage(),1000);
+    // return () => {
+    //   clearInterval(intervalHandle);
+    // }
+  }, []);
+
+  return (
+    <>
+      <Pressable onPress={() => getCurrentMessage()}>
+        <ChatHeader
+          profileImage={thomas}
+          name={"Issa - Le tuteur de Thomas"}
+          status={"en écrivant..."}
+        />
+      </Pressable>
+      <ChatBody
+        messages={messages}
+        setUserChoice={setUserChoice}
+        getCurrentMessage={getCurrentMessage}
+      />
+      <ChatInput />
+    </>
   );
 };
 

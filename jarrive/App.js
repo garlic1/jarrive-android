@@ -13,7 +13,7 @@ export default function App() {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="Log in" component={LogInScreen} /> */}
+        <Stack.Screen name="Log in" component={LogInScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>

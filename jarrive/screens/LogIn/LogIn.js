@@ -1,11 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  Text,
-  Pressable,
-  View,
-  Image,
-  ImageBackground,
-} from "react-native";
+import { Text, Pressable, View, Image, ImageBackground } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./styles";
 import CustomText from "../../components/CustomText";
@@ -16,7 +10,7 @@ import logo from "../../assets/jarrive_logo.png";
 import googleLogo from "../../assets/google_logo.png";
 import backgroundImage from "../../assets/login_background.jpg";
 
-const LogInScreen = () => {
+const LogInScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -40,7 +34,7 @@ const LogInScreen = () => {
     /** */
   };
   const onPressLogin = () => {
-    /** */
+    navigation.navigate("Chat");
   };
   const onPressRegister = () => {
     /** */
