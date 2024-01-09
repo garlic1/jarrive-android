@@ -16,7 +16,8 @@ const ChatBody = ({ messages, setUserChoice, getCurrentMessage }) => {
       }}
     >
       <FlatList
-        data={Object.keys(messages)}
+        data={Object.keys(messages).reverse()}
+        inverted
         renderItem={({ item }) => {
           return (
             <View style={{ marginVertical: 8 }}>

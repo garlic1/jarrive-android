@@ -23,13 +23,13 @@
       }
     ]
   },
-  "bonjour": {
+  "bonjourAlors": {
     "variant": "text",
     "content": [
       { "value": "Bonjour, alors!", "translation": "Bom dia, então!" }
     ]
   },
-  "bonsoir": {
+  "bonsoirAlors": {
     "variant": "text",
     "content": [
       { "value": "Bonsoir, alors!", "translation": "Boa noite, então!" }
@@ -67,6 +67,9 @@
   },
   "audio": {
     "variant": "audio"
+  },
+  "userInputAudio": {
+    "variant": "input"
   },
   "naoEntendeu": {
     "variant": "text",
@@ -112,8 +115,8 @@
     "variant": "choice",
     "content": [{ "value": "Vamos ler o que tá escrito? 😸😸" }],
     "choices": [
-      { "value": "END_SALUT", "label": "Oui 👍" },
-      { "value": "recusouLer", "label": "Non 👎" }
+      { "value": "oui", "label": "Oui 👍" },
+      { "value": "non", "label": "Non 👎" }
     ]
   },
   "recusouLer": {
@@ -123,5 +126,9 @@
       { "value": "curieux", "translation": "curioso" },
       { "value": "! 😹" }
     ]
+  },
+  "END": {
+    "variant": "text",
+    "content": [{ "value": "Fim do chat 😸😸" }]
   }
 }

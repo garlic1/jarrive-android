@@ -16,6 +16,7 @@ const stylesMessage = {
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopRightRadius: 20,
+    marginHorizontal: 10,
     filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
     maxWidth: "70%",
   },
@@ -25,13 +26,14 @@ const stylesMessage = {
   },
   textContainer: {
     paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingTop: 5,
+    paddingBottom: 10,
     gap: 4,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    height: 40
+    minHeight: 40,
   },
   choiceContainer: {
     flexDirection: "row",
@@ -60,7 +62,7 @@ const ChatMessage = ({ sent, message, setUserChoice }) => {
     case "choice":
       return <MessageChoice message={message} setUserChoice={setUserChoice} />;
     case "input":
-      // return 
+      // return
       break;
     case "image":
       // return <MessageImage message={message} />;
@@ -127,7 +129,13 @@ function MessageChoice({ message, setUserChoice }) {
       <TextRenderer message={message} />
       <View style={stylesMessage.choiceContainer}>
         {message.choices.map((choice) => (
-          <Pressable style={stylesMessage.choiceButton} key={choice.value} onPress={() => {setUserChoice(choice.value)}}>
+          <Pressable
+            style={stylesMessage.choiceButton}
+            key={choice.value}
+            onPress={() => {
+              setUserChoice(choice.value);
+            }}
+          >
             <Text style={stylesMessage.choiceButtonText}>{choice.label}</Text>
           </Pressable>
         ))}

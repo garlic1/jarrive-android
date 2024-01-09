@@ -3,9 +3,9 @@ import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import thomas from "../../assets/thomas.jpg";
 import MESSAGES_CONST from "../../utils/messages.json";
-import ORDER from "../../utils/order.json";
-import { Pressable, View, Text } from "react-native";
+import { Pressable } from "react-native";
 import { useEffect, useState } from "react";
+import useMessages from "../../hooks/useMessages";
 
 const Chat = () => {
   const [messages, _] = useState([MESSAGES_CONST["salut"]]);
@@ -13,37 +13,14 @@ const Chat = () => {
   const [currentMessage, setCurrentMessage] = useState("bonjourOuBonsoir");
   const [userChoice, setUserChoice] = useState("bonjour");
 
-  const getCurrentMessage = () => {
-    {
-      console.log("previous: ", previousMessage);
-    }
-    {
-      console.log("current: ", currentMessage);
-    }
-    const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
-    switch (previousMessageVariant) {
-      case "text":
-      case "image":
-      case "audio":
-      case "input":
-        setPreviousMessage(currentMessage);
-        setCurrentMessage(ORDER[currentMessage]);
-        messages.push(MESSAGES_CONST[currentMessage]);
-        break;
-      case "choice":
-        {
-          const currentMessageChoice = ORDER[userChoice];
-          console.log("currentMessageChoice", currentMessageChoice);
-          console.log("userChoice", userChoice);
-          setPreviousMessage(userChoice);
-          setCurrentMessage(currentMessageChoice);
-          messages.push(MESSAGES_CONST[currentMessageChoice]);
-        }
-        break;
-      default:
-        break;
-    }
-  };
+  const { getCurrentMessage } = useMessages({
+    setPreviousMessage,
+    setCurrentMessage,
+    messages,
+    currentMessage,
+    previousMessage,
+    userChoice,
+  });
 
   // setTimeout(()=>getCurrentMessage(),1000);
 

@@ -1,8 +1,10 @@
 {
     "salut": "bonjourOuBonsoir",
     "bonjourOuBonsoir": ["bonjour", "bonsoir"],
-    "bonjour": "thomasTrain",
-    "bonsoir": "thomasTrain",
+    "bonjour": "bonjourAlors",
+    "bonsoir": "bonsoirAlors",
+    "bonjourAlors": "thomasTrain",
+    "bonsoirAlors": "thomasTrain",
     "thomasTrain": "jemapelle",
     "jemapelle": "userInputJemapelle",
     "userInputJemapelle": "enchante",
@@ -11,6 +13,7 @@
     "chat": "audio",
     "audio": "userInputAudio",
     "userInputAudio": "naoEntendeu",
+    "naoEntendeu": "entregar",
     "human": "entregar",
     "entregar": "postaleImage",
     "postaleImage": "postaleChoice",
@@ -18,7 +21,11 @@
     "train": "tentarNovamentePostale",
     "croissant": "tentarNovamentePostale",
     "cartePostale": "cartePostaleChoice",
+    "cartePostaleChoice": "vamosLer",
     "tentarNovamentePostale": "postaleChoice",
-    "vamosLer": ["END_SALUT", "recusouLer"],
-    "recusouLer": "END_SALUT"
+    "vamosLer": ["oui", "non"],
+    "oui": "END",
+    "non": "recusouLer",
+    "recusouLer": "END",
+    "END": "END"
 }
