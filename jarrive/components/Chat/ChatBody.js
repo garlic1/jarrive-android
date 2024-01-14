@@ -1,10 +1,7 @@
 import {
   FlatList,
   SafeAreaView,
-  View,
-  StatusBar,
-  Pressable,
-  Text,
+  View
 } from "react-native";
 import ChatMessage from "./ChatMessage";
 
@@ -24,6 +21,7 @@ const ChatBody = ({ messages, setUserChoice, getCurrentMessage }) => {
               <ChatMessage
                 message={messages[item]}
                 setUserChoice={setUserChoice}
+                getCurrentMessage={getCurrentMessage}
               />
             </View>
           );

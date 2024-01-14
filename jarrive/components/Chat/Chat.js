@@ -11,7 +11,7 @@ const Chat = () => {
   const [messages, _] = useState([MESSAGES_CONST["salut"]]);
   const [previousMessage, setPreviousMessage] = useState("salut");
   const [currentMessage, setCurrentMessage] = useState("bonjourOuBonsoir");
-  const [userChoice, setUserChoice] = useState("bonjour");
+  const [userChoice, setUserChoice] = useState("");
 
   const { getCurrentMessage } = useMessages({
     setPreviousMessage,
@@ -21,15 +21,6 @@ const Chat = () => {
     previousMessage,
     userChoice,
   });
-
-  // setTimeout(()=>getCurrentMessage(),1000);
-
-  useEffect(() => {
-    // const intervalHandle = setInterval(()=>getCurrentMessage(),1000);
-    // return () => {
-    //   clearInterval(intervalHandle);
-    // }
-  }, []);
 
   return (
     <>

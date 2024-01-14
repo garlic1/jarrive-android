@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, TouchableHighlight, View } from "react-native";
 
 const stylesMessage = {
   sentMessageContainer: {
@@ -36,14 +36,15 @@ const stylesMessage = {
     minHeight: 40,
   },
   choiceContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 30,
     gap: 8,
-    flexWrap: "wrap",
   },
   choiceButton: {
     backgroundColor: "#76BFE0",
-    boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, 0.25)",
+    elevation: 4,
     borderRadius: 16,
     marginBottom: 8,
   },
@@ -55,6 +56,8 @@ const stylesMessage = {
   },
 };
 
+const stylesImageMessage = {};
+
 const ChatMessage = ({ sent, message, setUserChoice }) => {
   switch (message.variant) {
     case "text":
@@ -65,7 +68,7 @@ const ChatMessage = ({ sent, message, setUserChoice }) => {
       // return
       break;
     case "image":
-      // return <MessageImage message={message} />;
+      return <MessageImage message={message} />;
       break;
     case "audio":
       // return <MessageAudio message={message} />;
@@ -87,7 +90,7 @@ function TextRenderer({ message }) {
                   ...stylesMessage.textStyle,
                   position: "relative",
                   top: 4,
-                  marginHorizontal: 2,
+                  marginLeft: 2,
                   textDecorationLine: "underline",
                 }}
               >
@@ -129,7 +132,7 @@ function MessageChoice({ message, setUserChoice }) {
       <TextRenderer message={message} />
       <View style={stylesMessage.choiceContainer}>
         {message.choices.map((choice) => (
-          <Pressable
+          <TouchableHighlight
             style={stylesMessage.choiceButton}
             key={choice.value}
             onPress={() => {
@@ -137,10 +140,39 @@ function MessageChoice({ message, setUserChoice }) {
             }}
           >
             <Text style={stylesMessage.choiceButtonText}>{choice.label}</Text>
-          </Pressable>
+          </TouchableHighlight>
         ))}
       </View>
     </View>
+  );
+}
+
+function MessageImage({ message }) {
+  const images = {
+    thomas_train: require("../../assets/thomas_train.png"),
+    postcard_preview: require("../../assets/postcard_preview.jpg"),
+  };
+
+  return (
+    <Pressable onPress={() => {}}>
+      <Image
+        style={{
+          width: 150,
+          height: 150,
+          borderColor: "white",
+          borderWidth: 2,
+          backgroundColor: "white",
+          marginRight: "auto",
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+          borderTopRightRadius: 20,
+          marginHorizontal: 10,
+          filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
+          maxWidth: "70%",
+        }}
+        source={images[message.src]}
+      />
+    </Pressable>
   );
 }
 

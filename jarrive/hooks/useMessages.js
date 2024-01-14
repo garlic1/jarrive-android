@@ -1,5 +1,6 @@
 import MESSAGES_CONST from "../utils/messages.json";
 import ORDER from "../utils/order.json";
+import { useEffect } from "react";
 
 const useMessages = ({
   setPreviousMessage,
@@ -10,11 +11,6 @@ const useMessages = ({
   userChoice,
 }) => {
   const getCurrentMessage = () => {
-    console.log("previous: ", previousMessage);
-    console.log("current: ", currentMessage);
-    // if (previousMessage === "END") {
-    //     return;
-    // }
     const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
     switch (previousMessageVariant) {
       case "text":
@@ -28,8 +24,6 @@ const useMessages = ({
       case "choice":
         {
           const currentMessageChoice = ORDER[userChoice];
-          console.log("userChoice", userChoice);
-          console.log("currentMessageChoice", currentMessageChoice);
           setPreviousMessage(currentMessageChoice);
           setCurrentMessage(ORDER[currentMessageChoice]);
           messages.push(MESSAGES_CONST[currentMessageChoice]);
@@ -39,6 +33,19 @@ const useMessages = ({
         break;
     }
   };
+
+  useEffect(() => {
+    getCurrentMessage();
+  }, [userChoice]);
+
+  // setTimeout(()=>getCurrentMessage(),1000);
+
+  useEffect(() => {
+    // const intervalHandle = setInterval(()=>getCurrentMessage(),1000);
+    // return () => {
+    //   clearInterval(intervalHandle);
+    // }
+  }, []);
 
   return {
     getCurrentMessage,

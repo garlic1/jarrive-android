@@ -16,7 +16,7 @@
         "value": "bonjour ☀️?",
         "translation": "bom dia"
       },
-      { "value": "ou" },
+      { "value": " ou" },
       {
         "value": "bonsoir 🌙?",
         "translation": "boa noite"
@@ -37,13 +37,13 @@
   },
   "thomasTrain": {
     "variant": "image",
-    "src": "thomasTrain"
+    "src": "thomas_train"
   },
   "jemapelle": {
     "variant": "text",
     "content": [
       { "value": "Je m'appelle", "translation": "Meu nome é" },
-      { "value": "Thomas, e você?" }
+      { "value": " Thomas, e você?" }
     ]
   },
   "userInputJemapelle": {
@@ -57,7 +57,7 @@
     "variant": "choice",
     "content": [
       { "value": "Human", "translation": "Humano" },
-      { "value": "ou" },
+      { "value": " ou" },
       { "value": "chat?", "translation": "gato" }
     ],
     "choices": [
@@ -84,12 +84,12 @@
     "content": [
       { "value": "Além de chat, " },
       { "value": "je suis", "translation": "eu sou" },
-      { "value": "carteiro e preciso entregar isso aqui, me ajuda?" }
+      { "value": " carteiro e preciso entregar isso aqui, me ajuda?" }
     ]
   },
   "postaleImage": {
     "variant": "image",
-    "src": ""
+    "src": "postcard_preview"
   },
   "postaleChoice": {
     "variant": "choice",
@@ -97,7 +97,7 @@
     "choices": [
       { "value": "train", "label": "Train 🚂" },
       { "value": "croissant", "label": "Croissant 🥐" },
-      { "value": "cartePostaleChoice", "label": "Carte Postale ✉️" }
+      { "value": "cartePostale", "label": "Carte Postale ✉️" }
     ]
   },
   "tentarNovamentePostale": {
@@ -108,7 +108,7 @@
     "variant": "text",
     "content": [
       { "value": "Très bien!", "translation": "Muito bem" },
-      { "value": "Une carte postale.", "translation": "Um cartão postal." }
+      { "value": " Une carte postale.", "translation": "Um cartão postal." }
     ]
   },
   "vamosLer": {
@@ -123,7 +123,7 @@
     "variant": "text",
     "content": [
       { "value": "Je suis" },
-      { "value": "curieux", "translation": "curioso" },
+      { "value": " curieux", "translation": "curioso" },
       { "value": "! 😹" }
     ]
   },
