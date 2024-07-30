@@ -7,6 +7,8 @@ const stylesMessage = {
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 20,
+    marginHorizontal: 10,
+    paddingTop: 5,
     filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
     maxWidth: "70%",
   },
@@ -56,7 +58,20 @@ const stylesMessage = {
   },
 };
 
-const stylesImageMessage = {};
+const stylesImageMessage = {
+  width: 150,
+  height: 150,
+  borderColor: "white",
+  borderWidth: 2,
+  backgroundColor: "white",
+  marginRight: "auto",
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+  borderTopRightRadius: 20,
+  marginHorizontal: 10,
+  filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
+  maxWidth: "70%",
+};;
 
 const ChatMessage = ({ sent, message, setUserChoice }) => {
   switch (message.variant) {
@@ -65,7 +80,7 @@ const ChatMessage = ({ sent, message, setUserChoice }) => {
     case "choice":
       return <MessageChoice message={message} setUserChoice={setUserChoice} />;
     case "input":
-      // return
+      return <MessageText sent={true} message={message} />;
       break;
     case "image":
       return <MessageImage message={message} />;
@@ -156,20 +171,7 @@ function MessageImage({ message }) {
   return (
     <Pressable onPress={() => {}}>
       <Image
-        style={{
-          width: 150,
-          height: 150,
-          borderColor: "white",
-          borderWidth: 2,
-          backgroundColor: "white",
-          marginRight: "auto",
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          borderTopRightRadius: 20,
-          marginHorizontal: 10,
-          filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
-          maxWidth: "70%",
-        }}
+        style={stylesImageMessage}
         source={images[message.src]}
       />
     </Pressable>

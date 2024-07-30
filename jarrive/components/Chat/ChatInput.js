@@ -6,7 +6,11 @@ import {
 } from "react-native";
 import sendMessageIcon from "../../assets/send_message_icon.png";
 
-const ChatInput = () => {
+const ChatInput = ({
+  disabled, 
+  onSubmit,
+  onChangeName
+}) => {
   return (
     <KeyboardAvoidingView
       style={{
@@ -26,6 +30,7 @@ const ChatInput = () => {
           paddingHorizontal: 15,
           height: 45,
         }}
+        onChangeText={onChangeName}
         placeholder="Digite seu nome aqui"
       />
       <Pressable
@@ -38,6 +43,7 @@ const ChatInput = () => {
           backgroundColor: "#76BFE0",
           filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
         }}
+        onPress={onSubmit}
       >
         <Image
           source={sendMessageIcon}

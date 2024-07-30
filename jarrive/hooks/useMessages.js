@@ -10,7 +10,7 @@ const useMessages = ({
   previousMessage,
   userChoice,
 }) => {
-  const getCurrentMessage = () => {
+  const getCurrentMessage = (name) => {
     const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
     switch (previousMessageVariant) {
       case "text":
@@ -19,7 +19,12 @@ const useMessages = ({
       case "input":
         setPreviousMessage(currentMessage);
         setCurrentMessage(ORDER[currentMessage]);
-        messages.push(MESSAGES_CONST[currentMessage]);
+        if (MESSAGES_CONST[currentMessage].variant === "input") {
+          const messageWithUserName = { ...MESSAGES_CONST[currentMessage], content: [{ value: name }]};
+          messages.push(messageWithUserName);
+        } else {
+          messages.push(MESSAGES_CONST[currentMessage]);
+        }
         break;
       case "choice":
         {
