@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, Text, TouchableHighlight, View } from "react-native";
 
 const stylesMessage = {
@@ -9,7 +10,6 @@ const stylesMessage = {
     borderTopLeftRadius: 20,
     marginHorizontal: 10,
     paddingTop: 5,
-    filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
     maxWidth: "70%",
   },
   receivedMessageContainer: {
@@ -19,7 +19,6 @@ const stylesMessage = {
     borderBottomRightRadius: 20,
     borderTopRightRadius: 20,
     marginHorizontal: 10,
-    filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
     maxWidth: "70%",
   },
   textStyle: {
@@ -69,9 +68,8 @@ const stylesImageMessage = {
   borderBottomRightRadius: 20,
   borderTopRightRadius: 20,
   marginHorizontal: 10,
-  filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
   maxWidth: "70%",
-};;
+};
 
 const ChatMessage = ({ sent, message, setUserChoice }) => {
   switch (message.variant) {
@@ -163,13 +161,15 @@ function MessageChoice({ message, setUserChoice }) {
 }
 
 function MessageImage({ message }) {
+  const navigation = useNavigation();
+  
   const images = {
     thomas_train: require("../../assets/thomas_train.png"),
     postcard_preview: require("../../assets/postcard_preview.jpg"),
   };
 
   return (
-    <Pressable onPress={() => {}}>
+    <Pressable onPress={() => {navigation.navigate("Image", { src: images[message.src], title: "Issa - Le tuteur de Thomas" })}}>
       <Image
         style={stylesImageMessage}
         source={images[message.src]}
