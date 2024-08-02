@@ -1,5 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, Text, TouchableHighlight, View } from "react-native";
+import { Audio } from "expo-av";
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 
 const stylesMessage = {
   sentMessageContainer: {
@@ -55,6 +58,13 @@ const stylesMessage = {
     paddingHorizontal: 15,
     lineHeight: 25,
   },
+  audioContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
 };
 
 const stylesImageMessage = {
@@ -79,13 +89,10 @@ const ChatMessage = ({ sent, message, setUserChoice }) => {
       return <MessageChoice message={message} setUserChoice={setUserChoice} />;
     case "input":
       return <MessageText sent={true} message={message} />;
-      break;
     case "image":
       return <MessageImage message={message} />;
-      break;
     case "audio":
-      // return <MessageAudio message={message} />;
-      break;
+      return <MessageAudio />;
     default:
       return <MessageText sent={sent} />;
   }
@@ -162,19 +169,77 @@ function MessageChoice({ message, setUserChoice }) {
 
 function MessageImage({ message }) {
   const navigation = useNavigation();
-  
+
   const images = {
     thomas_train: require("../../assets/thomas_train.png"),
     postcard_preview: require("../../assets/postcard_preview.jpg"),
   };
 
   return (
-    <Pressable onPress={() => {navigation.navigate("Image", { src: images[message.src], title: "Issa - Le tuteur de Thomas" })}}>
-      <Image
-        style={stylesImageMessage}
-        source={images[message.src]}
-      />
+    <Pressable
+      onPress={() => {
+        navigation.navigate("Image", {
+          src: images[message.src],
+          title: "Issa - Le tuteur de Thomas",
+        });
+      }}
+    >
+      <Image style={stylesImageMessage} source={images[message.src]} />
     </Pressable>
+  );
+}
+
+function MessageAudio() {
+  const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const onPlay = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../assets/coringa.mp3")
+    );
+    setSound(sound);
+    await sound.playAsync();
+    setIsPlaying(true);
+  };
+
+  const onPause = async () => {
+    if (sound) {
+      await sound.pauseAsync();
+      setIsPlaying(false);
+    }
+  };
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  return (
+    <View style={stylesMessage.receivedMessageContainer}>
+      <View style={stylesMessage.audioContainer}>
+        {isPlaying ? (
+          <Pressable
+            onPress={() => {
+              onPause();
+            }}
+          >
+            <Ionicons name="pause" color="#2C327E" size={20} />
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={() => {
+              onPlay();
+            }}
+          >
+            <Ionicons name="play" color="#2C327E" size={20} />
+          </Pressable>
+        )}
+        <Image source={require("../../assets/audio.png")} />
+      </View>
+    </View>
   );
 }
 
