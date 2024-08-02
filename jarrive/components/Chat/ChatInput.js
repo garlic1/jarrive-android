@@ -26,7 +26,6 @@ const ChatInput = ({
           backgroundColor: "white",
           flex: 1,
           borderRadius: 24,
-          boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, 0.25)",
           paddingHorizontal: 15,
           height: 45,
         }}
@@ -41,7 +40,6 @@ const ChatInput = ({
           display: "flex",
           justifyContent: "center",
           backgroundColor: "#76BFE0",
-          filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25))",
         }}
         onPress={onSubmit}
       >

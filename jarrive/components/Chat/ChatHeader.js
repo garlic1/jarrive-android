@@ -11,7 +11,6 @@ const chatHeaderStyles = {
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     zIndex: 10,
-    boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, 0.25)",
     backgroundColor: "white",
   },
   profileImageStyle: {

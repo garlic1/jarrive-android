@@ -81,7 +81,6 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 50,
     padding: 15,
-    boxShadow: "0px 2px 5px 0px rgba(44, 50, 126, 0.20)",
   },
   loginButtonText: {
     color: "white",
