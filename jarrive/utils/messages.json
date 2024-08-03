@@ -69,7 +69,8 @@
     "variant": "audio"
   },
   "userInputAudio": {
-    "variant": "input"
+    "variant": "input",
+    "content": [{ "value": "??????" }]
   },
   "naoEntendeu": {
     "variant": "text",

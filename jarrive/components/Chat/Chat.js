@@ -12,7 +12,7 @@ const Chat = () => {
   const [previousMessage, setPreviousMessage] = useState("salut");
   const [currentMessage, setCurrentMessage] = useState("bonjourOuBonsoir");
   const [userChoice, setUserChoice] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userInput, setUserInput] = useState("");
 
   const { getCurrentMessage } = useMessages({
     setPreviousMessage,
@@ -23,13 +23,15 @@ const Chat = () => {
     userChoice,
   });
 
-  const onSubmitName = () => {
-    getCurrentMessage(userName);
-  }
+  const onSubmitUserInput = () => {
+  if (MESSAGES_CONST[currentMessage].variant === "input") {
+      getCurrentMessage(userInput);
+    }
+  };
 
-  const onChangeName = (text) => {
-    setUserName(text);
-  }
+  const onChangeUserInput = (text) => {
+    setUserInput(text);
+  };
 
   return (
     <>
@@ -45,9 +47,9 @@ const Chat = () => {
         setUserChoice={setUserChoice}
         getCurrentMessage={getCurrentMessage}
       />
-      <ChatInput 
-        onChangeName={onChangeName}
-        onSubmit={onSubmitName}
+      <ChatInput
+        onChangeName={onChangeUserInput}
+        onSubmit={onSubmitUserInput}
         disabled={messages[currentMessage]?.variant !== "input"}
       />
     </>
