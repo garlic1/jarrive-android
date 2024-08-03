@@ -37,15 +37,25 @@ const chatInputStyles = {
   },
 };
 
-const ChatInput = ({ disabled, onSubmit, onChangeName }) => {
+const ChatInput = ({ disabled, onSubmit, onChangeUserInput, userInput }) => {
+  if (disabled) {
+    return;
+  }
+  
   return (
     <KeyboardAvoidingView style={chatInputStyles.container}>
       <TextInput
         style={chatInputStyles.textInput}
-        onChangeText={onChangeName}
+        onChangeText={onChangeUserInput}
         placeholder="Digite seu nome aqui"
+        value={userInput}
+        editable={!disabled}
       />
-      <Pressable style={chatInputStyles.sendButton} onPress={onSubmit}>
+      <Pressable
+        style={chatInputStyles.sendButton}
+        onPress={onSubmit}
+        disabled={disabled}
+      >
         <Image
           source={sendMessageIcon}
           style={chatInputStyles.sendButtonImage}

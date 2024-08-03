@@ -24,9 +24,10 @@ const Chat = () => {
   });
 
   const onSubmitUserInput = () => {
-  if (MESSAGES_CONST[currentMessage].variant === "input") {
+    if (MESSAGES_CONST[currentMessage].variant === "input") {
       getCurrentMessage(userInput);
     }
+    setUserInput("");
   };
 
   const onChangeUserInput = (text) => {
@@ -48,9 +49,13 @@ const Chat = () => {
         getCurrentMessage={getCurrentMessage}
       />
       <ChatInput
-        onChangeName={onChangeUserInput}
+        onChangeUserInput={onChangeUserInput}
         onSubmit={onSubmitUserInput}
-        disabled={messages[currentMessage]?.variant !== "input"}
+        value={userInput}
+        disabled={
+          MESSAGES_CONST[currentMessage]?.variant !== "input" ||
+          MESSAGES_CONST[currentMessage]?.content
+        }
       />
     </>
   );

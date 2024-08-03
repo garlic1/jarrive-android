@@ -3,6 +3,7 @@ import { Image, Pressable, Text, TouchableHighlight, View } from "react-native";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import { Tooltip } from "@rneui/themed";
 
 const stylesMessage = {
   sentMessageContainer: {
@@ -98,13 +99,38 @@ const ChatMessage = ({ sent, message, setUserChoice }) => {
   }
 };
 
+const ControlledTooltip = (props) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Tooltip
+      visible={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
+      {...props}
+    />
+  );
+};
+
 function TextRenderer({ message }) {
   return (
     <Text style={stylesMessage.textContainer}>
       {message.content.map((substring) => {
         if (substring?.translation) {
           return (
-            <Pressable key={substring.value}>
+            <ControlledTooltip
+              key={substring.value}
+              popover={
+                <Text style={stylesMessage.textStyle}>
+                  {substring.translation}
+                </Text>
+              }
+              backgroundColor={"#23C86F"}
+              withOverlay={false}
+            >
               <Text
                 style={{
                   ...stylesMessage.textStyle,
@@ -116,7 +142,7 @@ function TextRenderer({ message }) {
               >
                 {substring.value}
               </Text>
-            </Pressable>
+            </ControlledTooltip>
           );
         }
         return (
