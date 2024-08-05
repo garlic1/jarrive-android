@@ -43,7 +43,7 @@ const stylesMessage = {
     minHeight: 40,
   },
   choiceContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
@@ -57,6 +57,18 @@ const stylesMessage = {
   },
   choiceButtonText: {
     color: "#2C327E",
+    fontWeight: 500,
+    paddingHorizontal: 15,
+    lineHeight: 25,
+  },
+  chosenButton: {
+    backgroundColor: "#2C327E",
+    elevation: 4,
+    borderRadius: 16,
+    marginBottom: 8,
+  },
+  chosenButtonText: {
+    color: "#FFFFFF",
     fontWeight: 500,
     paddingHorizontal: 15,
     lineHeight: 25,
@@ -85,7 +97,6 @@ const stylesImageMessage = {
 };
 
 const ChatMessage = ({ sent, message }) => {
-  // console.log(message);
   switch (message.variant) {
     case "text":
       return <MessageText sent={sent} message={message} />;
@@ -184,19 +195,28 @@ function MessageChoice({ message }) {
       <TextRenderer message={message} />
       <View style={stylesMessage.choiceContainer}>
         {message.choices.map((choice) => {
-          console.log(message.name)
           const chosen = userChoices[message.name] === choice.value;
 
           return (
             <TouchableHighlight
-              style={chosen ? null : stylesMessage.choiceButton}
+              style={
+                chosen ? stylesMessage.chosenButton : stylesMessage.choiceButton
+              }
               key={choice.value}
               onPress={() => {
                 onSelectUserChoice(choice.value);
                 getCurrentMessage("", choice.value);
               }}
             >
-              <Text style={stylesMessage.choiceButtonText}>{choice.label}</Text>
+              <Text
+                style={
+                  chosen
+                    ? stylesMessage.chosenButtonText
+                    : stylesMessage.choiceButtonText
+                }
+              >
+                {choice.label}
+              </Text>
             </TouchableHighlight>
           );
         })}
