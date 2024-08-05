@@ -1,16 +1,19 @@
+import { MessagesContext } from "../context/MessagesContext";
 import MESSAGES_CONST from "../utils/messages.json";
 import ORDER from "../utils/order.json";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
-const useMessages = ({
-  setPreviousMessage,
-  setCurrentMessage,
-  messages,
-  currentMessage,
-  previousMessage,
-  userChoice,
-}) => {
-  const getCurrentMessage = (userInput) => {
+const useMessages = () => {
+  const {
+    userChoices,
+    setPreviousMessage,
+    setCurrentMessage,
+    messages,
+    currentMessage,
+    previousMessage,
+  } = useContext(MessagesContext);
+
+  const getCurrentMessage = (userInput, userChoice) => {
     const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
     switch (previousMessageVariant) {
       case "text":
@@ -44,7 +47,9 @@ const useMessages = ({
         break;
       case "choice":
         {
+          // console.log("userChoice", userChoice);
           const currentMessageChoice = ORDER[userChoice];
+          console.log("currentMessageChoice", currentMessageChoice);
           setPreviousMessage(currentMessageChoice);
           setCurrentMessage(ORDER[currentMessageChoice]);
           messages.push(MESSAGES_CONST[currentMessageChoice]);
@@ -54,11 +59,7 @@ const useMessages = ({
         break;
     }
   };
-
-  useEffect(() => {
-    getCurrentMessage();
-  }, [userChoice]);
-
+  
   // setTimeout(()=>getCurrentMessage(),1000);
 
   useEffect(() => {

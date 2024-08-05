@@ -1,45 +1,45 @@
 {
   "salut": {
+    "name": "salut",
     "variant": "text",
     "content": [
       { "value": "Salut? Quis est la?", "translation": "Oi? Quem está aí?" }
     ]
   },
   "bonjourOuBonsoir": {
+    "name": "bonjourOuBonsoir",
     "variant": "choice",
     "choices": [
       { "value": "bonjour", "label": "bonjour" },
       { "value": "bonsoir", "label": "bonsoir" }
     ],
     "content": [
-      {
-        "value": "bonjour ☀️?",
-        "translation": "bom dia"
-      },
+      { "value": "bonjour ☀️?", "translation": "bom dia" },
       { "value": " ou" },
-      {
-        "value": "bonsoir 🌙?",
-        "translation": "boa noite"
-      }
+      { "value": "bonsoir 🌙?", "translation": "boa noite" }
     ]
   },
   "bonjourAlors": {
+    "name": "bonjourAlors",
     "variant": "text",
     "content": [
       { "value": "Bonjour, alors!", "translation": "Bom dia, então!" }
     ]
   },
   "bonsoirAlors": {
+    "name": "bonsoirAlors",
     "variant": "text",
     "content": [
       { "value": "Bonsoir, alors!", "translation": "Boa noite, então!" }
     ]
   },
   "thomasTrain": {
+    "name": "thomasTrain",
     "variant": "image",
     "src": "thomas_train"
   },
   "jemapelle": {
+    "name": "jemapelle",
     "variant": "text",
     "content": [
       { "value": "Je m'appelle", "translation": "Meu nome é" },
@@ -47,13 +47,18 @@
     ]
   },
   "userInputJemapelle": {
+    "name": "userInputJemapelle",
     "variant": "input"
   },
   "enchante": {
+    "name": "enchante",
     "variant": "text",
-    "content": [{ "value": "Enchanté! 😽😽", "translation": "Encantado! 😽😽" }]
+    "content": [
+      { "value": "Enchanté! 😽😽", "translation": "Encantado! 😽😽" }
+    ]
   },
   "humanOuChat": {
+    "name": "humanOuChat",
     "variant": "choice",
     "content": [
       { "value": "Human", "translation": "Humano" },
@@ -66,13 +71,16 @@
     ]
   },
   "audio": {
+    "name": "audio",
     "variant": "audio"
   },
   "userInputAudio": {
+    "name": "userInputAudio",
     "variant": "input",
     "content": [{ "value": "??????" }]
   },
   "naoEntendeu": {
+    "name": "naoEntendeu",
     "variant": "text",
     "content": [
       { "value": "Você não entendeu?" },
@@ -81,6 +89,7 @@
     ]
   },
   "entregar": {
+    "name": "entregar",
     "variant": "text",
     "content": [
       { "value": "Além de chat, " },
@@ -89,10 +98,12 @@
     ]
   },
   "postaleImage": {
+    "name": "postaleImage",
     "variant": "image",
     "src": "postcard_preview"
   },
   "postaleChoice": {
+    "name": "postaleChoice",
     "variant": "choice",
     "content": [{ "value": "Você sabe o que é isso?" }],
     "choices": [
@@ -102,10 +113,12 @@
     ]
   },
   "tentarNovamentePostale": {
+    "name": "tentarNovamentePostale",
     "variant": "text",
     "content": [{ "value": "Vamos tentar novamente 😼" }]
   },
   "cartePostaleChoice": {
+    "name": "cartePostaleChoice",
     "variant": "text",
     "content": [
       { "value": "Très bien!", "translation": "Muito bem" },
@@ -113,6 +126,7 @@
     ]
   },
   "vamosLer": {
+    "name": "vamosLer",
     "variant": "choice",
     "content": [{ "value": "Vamos ler o que tá escrito? 😸😸" }],
     "choices": [
@@ -121,6 +135,7 @@
     ]
   },
   "recusouLer": {
+    "name": "recusouLer",
     "variant": "text",
     "content": [
       { "value": "Je suis" },
@@ -129,6 +144,7 @@
     ]
   },
   "END": {
+    "name": "END",
     "variant": "text",
     "content": [{ "value": "Fim do chat 😸😸" }]
   }

@@ -2,8 +2,10 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, Pressable, Text, TouchableHighlight, View } from "react-native";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Tooltip } from "@rneui/themed";
+import { MessagesContext } from "../../context/MessagesContext";
+import useMessages from "../../hooks/useMessages";
 
 const stylesMessage = {
   sentMessageContainer: {
@@ -41,7 +43,7 @@ const stylesMessage = {
     minHeight: 40,
   },
   choiceContainer: {
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 30,
@@ -82,12 +84,13 @@ const stylesImageMessage = {
   maxWidth: "70%",
 };
 
-const ChatMessage = ({ sent, message, setUserChoice }) => {
+const ChatMessage = ({ sent, message }) => {
+  // console.log(message);
   switch (message.variant) {
     case "text":
       return <MessageText sent={sent} message={message} />;
     case "choice":
-      return <MessageChoice message={message} setUserChoice={setUserChoice} />;
+      return <MessageChoice message={message} />;
     case "input":
       return <MessageText sent={true} message={message} />;
     case "image":
@@ -172,22 +175,31 @@ function MessageText({ message, sent }) {
   );
 }
 
-function MessageChoice({ message, setUserChoice }) {
+function MessageChoice({ message }) {
+  const { userChoices, onSelectUserChoice } = useContext(MessagesContext);
+  const { getCurrentMessage } = useMessages();
+
   return (
     <View style={stylesMessage.receivedMessageContainer}>
       <TextRenderer message={message} />
       <View style={stylesMessage.choiceContainer}>
-        {message.choices.map((choice) => (
-          <TouchableHighlight
-            style={stylesMessage.choiceButton}
-            key={choice.value}
-            onPress={() => {
-              setUserChoice(choice.value);
-            }}
-          >
-            <Text style={stylesMessage.choiceButtonText}>{choice.label}</Text>
-          </TouchableHighlight>
-        ))}
+        {message.choices.map((choice) => {
+          console.log(message.name)
+          const chosen = userChoices[message.name] === choice.value;
+
+          return (
+            <TouchableHighlight
+              style={chosen ? null : stylesMessage.choiceButton}
+              key={choice.value}
+              onPress={() => {
+                onSelectUserChoice(choice.value);
+                getCurrentMessage("", choice.value);
+              }}
+            >
+              <Text style={stylesMessage.choiceButtonText}>{choice.label}</Text>
+            </TouchableHighlight>
+          );
+        })}
       </View>
     </View>
   );

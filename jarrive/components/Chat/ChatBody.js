@@ -1,15 +1,14 @@
-import {
-  FlatList,
-  SafeAreaView,
-  View
-} from "react-native";
+import { FlatList, SafeAreaView, View } from "react-native";
 import ChatMessage from "./ChatMessage";
 
-const ChatBody = ({ messages, setUserChoice, getCurrentMessage }) => {
+const ChatBody = ({
+  messages,
+  getCurrentMessage,
+}) => {
   return (
     <SafeAreaView
       style={{
-        flex: 1
+        flex: 1,
       }}
     >
       <FlatList
@@ -20,7 +19,6 @@ const ChatBody = ({ messages, setUserChoice, getCurrentMessage }) => {
             <View style={{ marginVertical: 8 }}>
               <ChatMessage
                 message={messages[item]}
-                setUserChoice={setUserChoice}
                 getCurrentMessage={getCurrentMessage}
               />
             </View>
