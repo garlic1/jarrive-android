@@ -14,7 +14,7 @@ const INITIAL_VALUE = {
 export const MessagesContext = createContext(INITIAL_VALUE);
 
 export const MessagesProvider = ({ children }) => {
-  const [messages, _] = useState([MESSAGES_CONST["salut"]]);
+  const [messages, setMessages] = useState([MESSAGES_CONST["salut"]]);
   const [previousMessage, setPreviousMessage] = useState("salut");
   const [currentMessage, setCurrentMessage] = useState("bonjourOuBonsoir");
   const [userChoices, setUserChoices] = useState({});
@@ -25,6 +25,7 @@ export const MessagesProvider = ({ children }) => {
 
   const value = {
     messages,
+    setMessages,
     previousMessage,
     setPreviousMessage,
     currentMessage,

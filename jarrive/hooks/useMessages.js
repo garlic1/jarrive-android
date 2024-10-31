@@ -9,12 +9,20 @@ const useMessages = () => {
     setPreviousMessage,
     setCurrentMessage,
     messages,
+    setMessages,
     currentMessage,
     previousMessage,
   } = useContext(MessagesContext);
 
+  const createMessage = (message, content) => ({
+      ...MESSAGES_CONST[message],
+      content: [{ value: content }],
+  });
+
   const getCurrentMessage = (userInput, userChoice) => {
-    const previousMessageVariant = MESSAGES_CONST[previousMessage].variant;
+    const previousMessageVariant = MESSAGES_CONST[previousMessage]?.variant;
+    if (!previousMessageVariant) return;
+
     switch (previousMessageVariant) {
       case "text":
       case "image":
@@ -27,22 +35,15 @@ const useMessages = () => {
           MESSAGES_CONST[currentMessage].variant === "input" &&
           !!MESSAGES_CONST[currentMessage].content
         ) {
-          const messageWithHardcodedValue = {
-            ...MESSAGES_CONST[currentMessage],
-            content: [
-              { value: MESSAGES_CONST[currentMessage].content[0].value },
-            ],
-          };
-          messages.push(messageWithHardcodedValue);
+          const value = MESSAGES_CONST[currentMessage].content[0].value;
+          const messageWithHardcodedValue = createMessage(currentMessage, value);
+          setMessages([...messages, messageWithHardcodedValue]);
           // user input
         } else if (MESSAGES_CONST[currentMessage].variant === "input") {
-          const messageWithUserInput = {
-            ...MESSAGES_CONST[currentMessage],
-            content: [{ value: userInput }],
-          };
-          messages.push(messageWithUserInput);
+          const messageWithUserInput = createMessage(currentMessage, userInput);
+          setMessages([...messages, messageWithUserInput]);
         } else {
-          messages.push(MESSAGES_CONST[currentMessage]);
+          setMessages([...messages, MESSAGES_CONST[currentMessage]]);
         }
         break;
       case "choice":
@@ -52,7 +53,7 @@ const useMessages = () => {
           console.log("currentMessageChoice", currentMessageChoice);
           setPreviousMessage(currentMessageChoice);
           setCurrentMessage(ORDER[currentMessageChoice]);
-          messages.push(MESSAGES_CONST[currentMessageChoice]);
+          setMessages([...messages, MESSAGES_CONST[currentMessageChoice]]);
         }
         break;
       default:
