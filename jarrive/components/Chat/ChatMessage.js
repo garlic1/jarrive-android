@@ -253,11 +253,18 @@ function MessageAudio() {
 
   const onPlay = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/coringa.mp3")
+      require("../../assets/meow.m4a")
     );
     setSound(sound);
-    await sound.playAsync();
     setIsPlaying(true);
+
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.didJustFinish && !status.isLooping) {
+        setIsPlaying(false);
+      }
+    });
+
+    await sound.playAsync();
   };
 
   const onPause = async () => {
