@@ -34,8 +34,18 @@ const StampScreen = () => {
   });
 
   const backInterpolate = flipAnim.interpolate({
-    inputRange: [0, 180],
-    outputRange: ["180deg", "360deg"],
+    inputRange: [0, 90, 180],
+    outputRange: ["180deg", "90deg", "0deg"],
+  });
+
+  const frontOpacity = flipAnim.interpolate({
+    inputRange: [89, 90, 91],
+    outputRange: [1, 0, 0],
+  });
+
+  const backOpacity = flipAnim.interpolate({
+    inputRange: [89, 90, 91],
+    outputRange: [0, 1, 1],
   });
 
   return (
@@ -79,25 +89,45 @@ const StampScreen = () => {
             <Animated.View
               style={[
                 {
+                  position: "absolute",
                   transform: [{ rotateY: frontInterpolate }],
+                  backfaceVisibility: "hidden",
+                  opacity: frontOpacity,
+                  top: 50,
                 },
               ]}
             >
               <Image
-                source={flip ? stampBack : stampFront}
-                style={
-                  flip
-                    ? {
-                        height: 232,
-                        width: 334,
-                        backfaceVisibility: "hidden",
-                        transform: [{ rotateY: "180deg" }],
-                      }
-                    : { height: 232, width: 334, backfaceVisibility: "hidden" }
-                }
+                source={stampFront}
+                style={{
+                  height: 232,
+                  width: 334,
+                }}
                 resizeMode="contain"
               />
             </Animated.View>
+
+            <Animated.View
+              style={[
+                {
+                  position: "absolute",
+                  top: 50,
+                  transform: [{ rotateY: backInterpolate }],
+                  opacity: backOpacity,
+                  backfaceVisibility: "hidden",
+                },
+              ]}
+            >
+              <Image
+                source={stampBack}
+                style={{
+                  height: 232,
+                  width: 334,
+                }}
+                resizeMode="contain"
+              />
+            </Animated.View>
+            <View style={{ height: 232, width: 334 }} />
             <Pressable
               onPress={flipCard}
               style={{
