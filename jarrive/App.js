@@ -7,22 +7,34 @@ import useTheme from "./hooks/useTheme";
 import ChatScreen from "./screens/IntroductionChat/ChatScreen";
 import DownloadImage from "./screens/DownloadImage/DownloadImage";
 import StampScreen from "./screens/Stamp/StampScreen";
+import { CopilotProvider } from "react-native-copilot";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { theme } = useTheme();
 
+  const tutorialStyle = {
+    color: "white"
+  }
+
   return (
     <MessagesProvider>
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Log in" component={LogInScreen} />
-          <Stack.Screen name="Chat" component={ChatScreen} />
-          <Stack.Screen name="Image" component={DownloadImage} />
-          <Stack.Screen name="Stamp" component={StampScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <CopilotProvider
+        labels={{
+          finish: "Ok"
+        }}
+        tooltipStyle={tutorialStyle}
+      >
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Log in" component={LogInScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="Image" component={DownloadImage} />
+            <Stack.Screen name="Stamp" component={StampScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </CopilotProvider>
     </MessagesProvider>
   );
 }

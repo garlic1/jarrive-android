@@ -7,9 +7,11 @@ import { Pressable } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import useMessages from "../../hooks/useMessages";
 import { MessagesContext } from "../../context/MessagesContext";
+import { useCopilot } from "react-native-copilot";
 
 const Chat = () => {
   const [userInput, setUserInput] = useState("");
+  const { start } = useCopilot();
 
   const { messages, currentMessage } = useContext(MessagesContext);
 
@@ -29,6 +31,10 @@ const Chat = () => {
   const disableUserInput =
     MESSAGES_CONST[currentMessage]?.variant !== "input" ||
     MESSAGES_CONST[currentMessage]?.content;
+
+  useEffect(() => {
+    start();
+  }, [currentMessage]);
 
   return (
     <>
