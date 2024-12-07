@@ -36,8 +36,6 @@ export const MessagesProvider = ({ children }) => {
 
   return (
     <MessagesContext.Provider value={value}>
-      <>{console.log("previousMessage", previousMessage)}</>
-      <>{console.log("currentMessage", currentMessage)}</>
       {children}
     </MessagesContext.Provider>
   );
