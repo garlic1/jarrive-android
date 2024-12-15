@@ -6,6 +6,7 @@ import {
   View,
   StatusBar,
   Animated,
+  ScrollView,
 } from "react-native";
 import backgroundChat from "../../assets/background_chat.png";
 import cartePostaleFront from "../../assets/carte_postale/carte_postale_front.png";
@@ -227,35 +228,38 @@ const StampScreen = ({ navigation }) => {
                 </Text>
               </Pressable>
             </View>
-
-            {activeTab === "mensagem" && <MessageTab />}
-            {activeTab === "selos" && <StampsTab />}
           </View>
-          <Pressable
-            style={{
-              backgroundColor: "#FFFFFF",
-              paddingVertical: 5,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              elevation: 4,
-              borderRadius: 20,
-              marginHorizontal: 20,
-            }}
-            onPress={() => navigation.navigate("Chat")}
-          >
-            <Text
-              style={{
-                color: "#4354EF",
-                fontWeight: "bold",
-                fontSize: 16,
-              }}
-            >
-              VOLTAR PARA O CHAT
-            </Text>
-          </Pressable>
         </ImageBackground>
       </View>
+      <View style={{ marginTop: 150 }}>
+        {activeTab === "mensagem" && <MessageTab />}
+        {activeTab === "selos" && <StampsTab />}
+      </View>
+      <Pressable
+        style={{
+          backgroundColor: "#F5F5F5",
+          paddingVertical: 5,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          elevation: 4,
+          borderRadius: 20,
+          marginTop: 20,
+          marginHorizontal: 25
+        }}
+        onPress={() => navigation.navigate("Chat")}
+        disabled
+      >
+        <Text
+          style={{
+            color: "#D9D9D9",
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+        >
+          VOLTAR PARA O CHAT
+        </Text>
+      </Pressable>
     </View>
   );
 };
@@ -326,47 +330,52 @@ const MessageTab = () => {
 };
 
 const StampsTab = () => {
+  const stamps = [
+    {
+      type: "verbes reguliers",
+      number: "#001",
+      title: "Être",
+      variant: "available",
+    },
+    {
+      type: "verbes reguliers",
+      number: "#002",
+      title: "Appeler",
+      variant: "disabled",
+    },
+    {
+      type: "substantivos",
+      number: "#001",
+      title: "Pessoas",
+      variant: "disabled",
+    },
+    { type: "números", number: "#001", title: "1 a 10", variant: "disabled" },
+  ];
+
   return (
-    <View>
-      <View
+    <View style={{ margin: 30, width: 350 }}>
+      <Text
         style={{
-          marginLeft: 30,
-          marginTop: 30,
+          marginBottom: 27,
+          color: "#4354EF",
+          fontWeight: "bold",
+          fontSize: 16,
         }}
       >
-        <Text
-          style={{
-            color: "#4354EF",
-            fontWeight: "bold",
-            fontSize: 16,
-          }}
-        >
-          Faltam 3 selos para enviar o cartão postal!
-        </Text>
-        <Stamp
-          type={"verbes reguliers"}
-          number={"#001"}
-          title={"Être"}
-          variant={"available"}
-        />
-        <Stamp
-          type={"verbes reguliers"}
-          number={"#002"}
-          title={"Appeler"}
-          variant={"disabled"}
-        />
-        <Stamp
-          type={"substantivos"}
-          number={"#001"}
-          title={"Pessoas"}
-          variant={"disabled"}
-        />
-        <Stamp
-          type={"números"}
-          number={"#001"}
-          title={"1 a 10"}
-          variant={"disabled"}
-        />
+        Faltam 3 selos para enviar o cartão postal!
+      </Text>
+      <View>
+        <ScrollView horizontal>
+          {stamps.map(({ type, number, title, variant }, index) => (
+            <Stamp
+              key={index}
+              type={type}
+              number={number}
+              title={title}
+              variant={variant}
+            />
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -388,7 +397,7 @@ const Stamp = ({ type, number, title, variant }) => {
   const background = VARIANTS[variant];
 
   return (
-    <View>
+    <View style={{ marginRight: 20 }}>
       <ImageBackground
         source={background}
         style={{
