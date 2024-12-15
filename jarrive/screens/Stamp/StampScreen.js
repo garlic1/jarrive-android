@@ -8,8 +8,11 @@ import {
   Animated,
 } from "react-native";
 import backgroundChat from "../../assets/background_chat.png";
-import stampFront from "../../assets/stamps/stamp_front.png";
-import stampBack from "../../assets/stamps/stamp_back.png";
+import cartePostaleFront from "../../assets/carte_postale/carte_postale_front.png";
+import cartePostaleBack from "../../assets/carte_postale/carte_postale_back.png";
+import stampDisabled from "../../assets/stamp_disabled.png";
+import stampNormal from "../../assets/stamp.png";
+import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 
@@ -99,7 +102,7 @@ const StampScreen = ({ navigation }) => {
               ]}
             >
               <Image
-                source={stampFront}
+                source={cartePostaleFront}
                 style={{
                   height: 232,
                   width: 334,
@@ -120,7 +123,7 @@ const StampScreen = ({ navigation }) => {
               ]}
             >
               <Image
-                source={stampBack}
+                source={cartePostaleBack}
                 style={{
                   height: 232,
                   width: 334,
@@ -153,16 +156,14 @@ const StampScreen = ({ navigation }) => {
                   name="chevron-back-outline"
                   color="#2C327E"
                 />
-                {!flip && (
-                  <Text
-                    style={{
-                      color: "#2C327E",
-                      fontSize: 16,
-                    }}
-                  >
-                    virar cartão
-                  </Text>
-                )}
+                <Text
+                  style={{
+                    color: "#2C327E",
+                    fontSize: 16,
+                  }}
+                >
+                  virar cartão
+                </Text>
                 <Ionicons
                   size={20}
                   name="chevron-forward-outline"
@@ -182,25 +183,15 @@ const StampScreen = ({ navigation }) => {
               }}
             >
               <Pressable
-                style={
-                  activeTab === "selos"
-                    ? {
-                        color: "#FFFFFF",
-                        backgroundColor: "#2C327E",
-                        borderRadius: 20,
-                        elevation: 4,
-                        paddingVertical: 5,
-                        paddingHorizontal: 60,
-                      }
-                    : {
-                        color: "#D9D9D9",
-                        backgroundColor: "#F5F5F5",
-                        borderRadius: 20,
-                        elevation: 4,
-                        paddingVertical: 5,
-                        paddingHorizontal: 60,
-                      }
-                }
+                style={{
+                  color: activeTab === "selos" ? "#FFFFFF" : "#D9D9D9",
+                  backgroundColor:
+                    activeTab === "selos" ? "#2C327E" : "#F5F5F5",
+                  borderRadius: 20,
+                  elevation: 4,
+                  paddingVertical: 5,
+                  paddingHorizontal: 60,
+                }}
                 onPress={() => setActiveTab("selos")}
               >
                 <Text
@@ -214,23 +205,15 @@ const StampScreen = ({ navigation }) => {
                 </Text>
               </Pressable>
               <Pressable
-                style={
-                  activeTab === "mensagem"
-                    ? {
-                        backgroundColor: "#2C327E",
-                        borderRadius: 20,
-                        elevation: 4,
-                        paddingVertical: 5,
-                        paddingHorizontal: 40,
-                      }
-                    : {
-                        backgroundColor: "#F5F5F5",
-                        borderRadius: 20,
-                        elevation: 4,
-                        paddingVertical: 5,
-                        paddingHorizontal: 40,
-                      }
-                }
+                style={{
+                  color: activeTab === "mensagem" ? "#FFFFFF" : "#D9D9D9",
+                  backgroundColor:
+                    activeTab === "mensagem" ? "#2C327E" : "#F5F5F5",
+                  borderRadius: 20,
+                  elevation: 4,
+                  paddingVertical: 5,
+                  paddingHorizontal: 60,
+                }}
                 onPress={() => setActiveTab("mensagem")}
               >
                 <Text
@@ -360,7 +343,71 @@ const StampsTab = () => {
         >
           Faltam 3 selos para enviar o cartão postal!
         </Text>
+        <Stamp
+          type={"verbes reguliers"}
+          number={"#001"}
+          title={"Être"}
+          variant={"available"}
+        />
+        <Stamp
+          type={"verbes reguliers"}
+          number={"#002"}
+          title={"Appeler"}
+          variant={"disabled"}
+        />
+        <Stamp
+          type={"substantivos"}
+          number={"#001"}
+          title={"Pessoas"}
+          variant={"disabled"}
+        />
+        <Stamp
+          type={"números"}
+          number={"#001"}
+          title={"1 a 10"}
+          variant={"disabled"}
+        />
       </View>
+    </View>
+  );
+};
+
+const Stamp = ({ type, number, title, variant }) => {
+  const VARIANTS = {
+    disabled: stampDisabled,
+    achieved: stampAchieved,
+    available: stampNormal,
+  };
+
+  const textStyle = {
+    disabled: { fontSize: 20, color: "#D9D9D9" },
+    achieved: { fontSize: 20, color: "#FFFFFF" },
+    available: { fontSize: 20, color: "#4354EF" },
+  };
+
+  const background = VARIANTS[variant];
+
+  return (
+    <View>
+      <ImageBackground
+        source={background}
+        style={{
+          width: 198,
+          height: 160,
+        }}
+      >
+        <View
+          style={{
+            margin: 25,
+          }}
+        >
+          <Text style={textStyle[variant]}>{type}</Text>
+          <Text style={textStyle[variant]}>{number + "\n"}</Text>
+          <Text style={{ ...textStyle[variant], fontWeight: "bold" }}>
+            {title}
+          </Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
