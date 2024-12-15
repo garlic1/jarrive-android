@@ -13,8 +13,9 @@ import stampBack from "../../assets/stamps/stamp_back.png";
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
 
-const StampScreen = () => {
+const StampScreen = ({ navigation }) => {
   const [flip, setFlip] = useState(false);
+  const [activeTab, setActiveTab] = useState("selos");
 
   const flipAnim = useRef(new Animated.Value(0)).current;
 
@@ -170,7 +171,195 @@ const StampScreen = () => {
               </View>
             </Pressable>
           </View>
+          <View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: 8,
+                margin: 20,
+              }}
+            >
+              <Pressable
+                style={
+                  activeTab === "selos"
+                    ? {
+                        color: "#FFFFFF",
+                        backgroundColor: "#2C327E",
+                        borderRadius: 20,
+                        elevation: 4,
+                        paddingVertical: 5,
+                        paddingHorizontal: 60,
+                      }
+                    : {
+                        color: "#D9D9D9",
+                        backgroundColor: "#F5F5F5",
+                        borderRadius: 20,
+                        elevation: 4,
+                        paddingVertical: 5,
+                        paddingHorizontal: 60,
+                      }
+                }
+                onPress={() => setActiveTab("selos")}
+              >
+                <Text
+                  style={{
+                    color: activeTab === "selos" ? "#FFFFFF" : "#D9D9D9",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Selos
+                </Text>
+              </Pressable>
+              <Pressable
+                style={
+                  activeTab === "mensagem"
+                    ? {
+                        backgroundColor: "#2C327E",
+                        borderRadius: 20,
+                        elevation: 4,
+                        paddingVertical: 5,
+                        paddingHorizontal: 40,
+                      }
+                    : {
+                        backgroundColor: "#F5F5F5",
+                        borderRadius: 20,
+                        elevation: 4,
+                        paddingVertical: 5,
+                        paddingHorizontal: 40,
+                      }
+                }
+                onPress={() => setActiveTab("mensagem")}
+              >
+                <Text
+                  style={{
+                    color: activeTab === "mensagem" ? "#FFFFFF" : "#D9D9D9",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Mensagem
+                </Text>
+              </Pressable>
+            </View>
+
+            {activeTab === "mensagem" && <MessageTab />}
+            {activeTab === "selos" && <StampsTab />}
+          </View>
+          <Pressable
+            style={{
+              backgroundColor: "#FFFFFF",
+              paddingVertical: 5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              elevation: 4,
+              borderRadius: 20,
+              marginHorizontal: 20,
+            }}
+            onPress={() => navigation.navigate("Chat")}
+          >
+            <Text
+              style={{
+                color: "#4354EF",
+                fontWeight: "bold",
+                fontSize: 16,
+              }}
+            >
+              VOLTAR PARA O CHAT
+            </Text>
+          </Pressable>
         </ImageBackground>
+      </View>
+    </View>
+  );
+};
+
+const MessageTab = () => {
+  return (
+    <View
+      style={{
+        backgroundColor: "#F5F5F5",
+        margin: 20,
+        borderRadius: 20,
+        padding: 12,
+      }}
+    >
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <Pressable
+          style={{
+            backgroundColor: "#FFFFFF",
+            height: 30,
+            width: 30,
+            borderRadius: 30,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            elevation: 4,
+          }}
+        >
+          <Ionicons size={20} name="volume-medium" color="#2C327E" />
+        </Pressable>
+        <View>
+          <Text
+            style={{
+              color: "#2C327E",
+              fontWeight: "bold",
+              fontSize: 16,
+            }}
+          >
+            Escute a mensagem!
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          margin: 12,
+        }}
+      >
+        <Text
+          style={{
+            fontStyle: "italic",
+            textAlign: "left",
+            color: "#787878",
+            fontSize: 16,
+            lineHeight: 25,
+          }}
+        >
+          {`Bonjour!\nJe m’appelle Charlotte, je suis grande: une fille de cinq ans!\n\nJe t’aime.\nBisous`}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+const StampsTab = () => {
+  return (
+    <View>
+      <View
+        style={{
+          marginLeft: 30,
+          marginTop: 30,
+        }}
+      >
+        <Text
+          style={{
+            color: "#4354EF",
+            fontWeight: "bold",
+            fontSize: 16,
+          }}
+        >
+          Faltam 3 selos para enviar o cartão postal!
+        </Text>
       </View>
     </View>
   );

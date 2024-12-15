@@ -4,15 +4,12 @@ import ChatInput from "./ChatInput";
 import thomas from "../../assets/thomas.jpg";
 import MESSAGES_CONST from "../../utils/messages.json";
 import { Pressable } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import useMessages from "../../hooks/useMessages";
 import { MessagesContext } from "../../context/MessagesContext";
-import { useCopilot } from "react-native-copilot";
 
 const Chat = () => {
   const [userInput, setUserInput] = useState("");
-  const { start } = useCopilot();
-
   const { messages, currentMessage } = useContext(MessagesContext);
 
   const { getCurrentMessage } = useMessages();
