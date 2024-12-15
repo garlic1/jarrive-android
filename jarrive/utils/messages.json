@@ -145,7 +145,6 @@
   },
   "END": {
     "name": "END",
-    "variant": "text",
-    "content": [{ "value": "Fim do chat 😸😸" }]
+    "variant": "END"
   }
 }

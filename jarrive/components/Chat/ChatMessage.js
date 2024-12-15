@@ -108,6 +108,8 @@ const ChatMessage = ({ sent, message }) => {
       return <MessageImage message={message} />;
     case "audio":
       return <MessageAudio />;
+    case "END":
+      return <></>;
     default:
       return <MessageText sent={sent} />;
   }

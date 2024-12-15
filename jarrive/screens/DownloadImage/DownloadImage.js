@@ -54,9 +54,6 @@ const DownloadImage = ({ route }) => {
           </Pressable>
           <Text style={imageHeaderStyles.text}>{title}</Text>
         </View>
-        <View style={imageHeaderStyles.downloadIcon}>
-          <Ionicons name="download-outline" color="#2F335C" size={25} />
-        </View>
       </View>
       <Image source={src} />
     </View>

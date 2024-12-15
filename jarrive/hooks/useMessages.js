@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { MessagesContext } from "../context/MessagesContext";
 import MESSAGES_CONST from "../utils/messages.json";
 import ORDER from "../utils/order.json";
@@ -14,11 +15,13 @@ const useMessages = () => {
     previousMessage,
   } = useContext(MessagesContext);
 
+  const navigation = useNavigation();
+
   const previousMessageVariant = MESSAGES_CONST[previousMessage]?.variant;
 
   const createMessage = (message, content) => ({
-      ...MESSAGES_CONST[message],
-      content: [{ value: content }],
+    ...MESSAGES_CONST[message],
+    content: [{ value: content }],
   });
 
   const getCurrentMessage = (userInput, userChoice) => {
@@ -29,6 +32,9 @@ const useMessages = () => {
       case "image":
       case "audio":
       case "input":
+        if (MESSAGES_CONST[currentMessage].variant === "END") {
+          navigation.navigate("Stamp");
+        }
         setPreviousMessage(currentMessage);
         setCurrentMessage(ORDER[currentMessage]);
         // hardcoded value
@@ -37,21 +43,35 @@ const useMessages = () => {
           !!MESSAGES_CONST[currentMessage].content
         ) {
           const value = MESSAGES_CONST[currentMessage].content[0].value;
-          const messageWithHardcodedValue = createMessage(currentMessage, value);
-          setMessages((prevMessages) => [...prevMessages, messageWithHardcodedValue]);
+          const messageWithHardcodedValue = createMessage(
+            currentMessage,
+            value
+          );
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            messageWithHardcodedValue,
+          ]);
           // user input
         } else if (MESSAGES_CONST[currentMessage].variant === "input") {
           const messageWithUserInput = createMessage(currentMessage, userInput);
-          setMessages((prevMessages) => [...prevMessages, messageWithUserInput]);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            messageWithUserInput,
+          ]);
         } else {
-          setMessages((prevMessages) => [...prevMessages, MESSAGES_CONST[currentMessage]]);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            MESSAGES_CONST[currentMessage],
+          ]);
         }
         break;
       case "choice":
         {
           // console.log("userChoice", userChoice);
           const currentMessageChoice = ORDER[userChoice];
-          console.log("currentMessageChoice", currentMessageChoice);
+          if (MESSAGES_CONST[currentMessageChoice].variant === "END") {
+            navigation.navigate("Stamp");
+          }
           setPreviousMessage(currentMessageChoice);
           setCurrentMessage(ORDER[currentMessageChoice]);
           setMessages([...messages, MESSAGES_CONST[currentMessageChoice]]);

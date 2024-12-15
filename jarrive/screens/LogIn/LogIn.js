@@ -34,7 +34,7 @@ const LogInScreen = ({ navigation }) => {
     /** */
   };
   const onPressLogin = () => {
-    navigation.navigate("Stamp");
+    navigation.navigate("Chat");
   };
   const onPressRegister = () => {
     /** */

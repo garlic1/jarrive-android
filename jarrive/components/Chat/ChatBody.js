@@ -1,6 +1,6 @@
-import { FlatList, SafeAreaView, Text, View } from "react-native";
+import { FlatList, SafeAreaView, View } from "react-native";
 import ChatMessage from "./ChatMessage";
-import { CopilotStep, useCopilot, walkthroughable } from "react-native-copilot";
+import { CopilotStep, useCopilot } from "react-native-copilot";
 
 const CustomWalkthroughableComponent = ({
   copilot,
