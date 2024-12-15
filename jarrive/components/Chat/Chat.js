@@ -32,10 +32,6 @@ const Chat = () => {
     MESSAGES_CONST[currentMessage]?.variant !== "input" ||
     MESSAGES_CONST[currentMessage]?.content;
 
-  useEffect(() => {
-    start();
-  }, [currentMessage]);
-
   return (
     <>
       <Pressable onPress={() => getCurrentMessage()}>

@@ -1,6 +1,6 @@
-import { FlatList, SafeAreaView, View } from "react-native";
+import { FlatList, SafeAreaView, Text, View } from "react-native";
 import ChatMessage from "./ChatMessage";
-import { CopilotStep } from "react-native-copilot";
+import { CopilotStep, useCopilot, walkthroughable } from "react-native-copilot";
 
 const CustomWalkthroughableComponent = ({
   copilot,
@@ -19,17 +19,20 @@ const CustomWalkthroughableComponent = ({
 };
 
 const ChatBody = ({ messages, getCurrentMessage }) => {
+  const { start } = useCopilot();
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
       }}
+      onLayout={() => start()}
     >
       <FlatList
         data={Object.keys(messages).reverse()}
         inverted
         renderItem={({ item }) => {
-          if (messages[item].name === "salut" && messages.length === 2) {
+          if (messages[item].name === "salut" && messages.length < 3) {
             return (
               <CopilotStep
                 text="Palavras sublinhadas indicam novas palavras! Pressione para aparecer a tradução."
@@ -43,15 +46,15 @@ const ChatBody = ({ messages, getCurrentMessage }) => {
                 />
               </CopilotStep>
             );
-          }
-          return (
-            <View style={{ marginVertical: 8 }}>
-              <ChatMessage
-                message={messages[item]}
-                getCurrentMessage={getCurrentMessage}
-              />
-            </View>
-          );
+          } else
+            return (
+              <View style={{ marginVertical: 8 }}>
+                <ChatMessage
+                  message={messages[item]}
+                  getCurrentMessage={getCurrentMessage}
+                />
+              </View>
+            );
         }}
         keyExtractor={(item) => item}
       />
