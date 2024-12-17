@@ -8,6 +8,7 @@ import ChatScreen from "./screens/IntroductionChat/ChatScreen";
 import DownloadImage from "./screens/DownloadImage/DownloadImage";
 import StampScreen from "./screens/Stamp/StampScreen";
 import { CopilotProvider } from "react-native-copilot";
+import Exercise from "./screens/Exercise/Exercise";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default function App() {
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Image" component={DownloadImage} />
             <Stack.Screen name="Stamp" component={StampScreen} />
+            <Stack.Screen name="Exercise" component={Exercise} />
           </Stack.Navigator>
         </NavigationContainer>
       </CopilotProvider>

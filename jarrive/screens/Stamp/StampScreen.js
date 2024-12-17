@@ -16,6 +16,7 @@ import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
+import VolumeButton from "../../components/VolumeButton";
 
 const StampScreen = ({ navigation }) => {
   const [flip, setFlip] = useState(false);
@@ -282,20 +283,7 @@ const MessageTab = () => {
           gap: 8,
         }}
       >
-        <Pressable
-          style={{
-            backgroundColor: "#FFFFFF",
-            height: 30,
-            width: 30,
-            borderRadius: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            elevation: 4,
-          }}
-        >
-          <Ionicons size={20} name="volume-medium" color="#2C327E" />
-        </Pressable>
+        <VolumeButton onPressVolumeButton={()=>{/* */}} />
         <View>
           <Text
             style={{
