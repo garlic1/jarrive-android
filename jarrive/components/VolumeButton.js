@@ -1,7 +1,7 @@
 import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const VolumeButton = ({ onPressVolumeButton }) => {
+const VolumeButton = ({ onPressVolumeButton, color }) => {
   return (
     <Pressable
       style={{
@@ -16,7 +16,7 @@ const VolumeButton = ({ onPressVolumeButton }) => {
       }}
       onPressVolumeButton={onPressVolumeButton}
     >
-      <Ionicons size={20} name="volume-medium" color="#2C327E" />
+      <Ionicons size={20} name="volume-medium" color={color} />
     </Pressable>
   );
 };

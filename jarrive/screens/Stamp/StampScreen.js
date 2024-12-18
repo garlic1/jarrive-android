@@ -246,7 +246,7 @@ const StampScreen = ({ navigation }) => {
           elevation: 4,
           borderRadius: 20,
           marginTop: 20,
-          marginHorizontal: 25
+          marginHorizontal: 25,
         }}
         onPress={() => navigation.navigate("Chat")}
         disabled
@@ -283,7 +283,11 @@ const MessageTab = () => {
           gap: 8,
         }}
       >
-        <VolumeButton onPressVolumeButton={()=>{/* */}} />
+        <VolumeButton
+          onPressVolumeButton={() => {
+            /* */
+          }}
+        />
         <View>
           <Text
             style={{

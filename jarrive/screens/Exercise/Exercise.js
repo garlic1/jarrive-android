@@ -16,6 +16,7 @@ import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
+import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
 
 const Exercise = ({ navigation }) => {
@@ -25,20 +26,14 @@ const Exercise = ({ navigation }) => {
     <View>
       <View
         style={{
-          backgroundColor: "#2C327E",
           height: 300,
-          borderBottomLeftRadius: 30,
-          borderBottomRightRadius: 30,
-          elevation: 10,
         }}
       >
         <ImageBackground
-          source={backgroundChat}
+          source={exercisesHeader}
           style={{
             height: "100%",
             width: "100%",
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 40,
           }}
           resizeMode="cover"
         >
@@ -54,7 +49,7 @@ const Exercise = ({ navigation }) => {
             <View>
               <View
                 style={{
-                  marginTop: StatusBar.currentHeight + 10 || 10,
+                  marginTop: StatusBar.currentHeight + 25 || 25,
                   display: "flex",
                   flexDirection: "row",
                   gap: 2,
@@ -64,14 +59,13 @@ const Exercise = ({ navigation }) => {
                   <Ionicons
                     size={20}
                     name="chevron-back-outline"
-                    color="#FFFFFF"
+                    color="#4354EF"
                   />
                 </Pressable>
                 <Text
                   style={{
-                    fontWeight: "bold",
-                    color: "white",
-                    fontSize: 20,
+                    color: "#4354EF",
+                    fontSize: 16,
                     marginBottom: 20,
                   }}
                 >
@@ -80,12 +74,35 @@ const Exercise = ({ navigation }) => {
                 <View></View>
               </View>
               <View>
-                <Text>Verbes</Text>
-                <Text>#001</Text>
-                <Text>Reconnaître</Text>
+                <Text
+                  style={{ color: "#4354EF", fontWeight: "bold", fontSize: 16 }}
+                >
+                  Verbes
+                </Text>
+                <Text
+                  style={{
+                    color: "#4354EF",
+                    fontWeight: "bold",
+                    marginBottom: 30,
+                    fontSize: 16,
+                  }}
+                >
+                  #001
+                </Text>
+                <Text
+                  style={{
+                    color: "#4354EF",
+                    fontWeight: "900",
+                    fontSize: 24,
+                    marginBottom: 20,
+                  }}
+                >
+                  Être
+                </Text>
               </View>
 
               <VolumeButton
+                color={"#4354EF"}
                 onPressVolumeButton={() => {
                   /* */
                 }}
@@ -93,7 +110,7 @@ const Exercise = ({ navigation }) => {
             </View>
             <View
               style={{
-                marginTop: StatusBar.height + 50 || 50,
+                marginTop: StatusBar.height + 100 || 100,
               }}
             >
               <Pressable
@@ -105,7 +122,11 @@ const Exercise = ({ navigation }) => {
                   borderRadius: 20,
                   elevation: 4,
                   paddingVertical: 5,
-                  paddingHorizontal: 60,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: 165,
+                  marginBottom: 10,
                 }}
                 onPress={() => setActiveTab("point explicatif")}
               >
@@ -128,7 +149,10 @@ const Exercise = ({ navigation }) => {
                   borderRadius: 20,
                   elevation: 4,
                   paddingVertical: 5,
-                  paddingHorizontal: 60,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: 165,
                 }}
                 onPress={() => setActiveTab("exercicies")}
               >
@@ -144,7 +168,6 @@ const Exercise = ({ navigation }) => {
               </Pressable>
             </View>
           </View>
-          <View style={{ height: 232, width: 334 }} />
         </ImageBackground>
       </View>
       <View>
@@ -162,7 +185,7 @@ const PointExplicatifTab = () => {
         title={"Conjugaison"}
         content={
           <>
-            <Text style={{ fontSize: 16 }}>
+            <Text style={{ fontSize: 16, color: "#787878" }}>
               O verbo{" "}
               <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
                 ÊTRE:{"\n"}
@@ -173,15 +196,31 @@ const PointExplicatifTab = () => {
               </Text>{" "}
               em português.{"\n"}A sua conjugação é:
             </Text>
-            <View>
-              <ConjugatedVerb pronoun={"Je"} conjugation={"suis"} />
-              <ConjugatedVerb pronoun={"Tu"} conjugation={"es"} />
-              <ConjugatedVerb pronoun={"Il"} conjugation={"est"} />
-              <ConjugatedVerb pronoun={"Elle"} conjugation={"est"} />
-              <ConjugatedVerb pronoun={"Nous"} conjugation={"sommes"} />
-              <ConjugatedVerb pronoun={"Vous"} conjugation={"êtes"} />
-              <ConjugatedVerb pronoun={"Ils"} conjugation={"sont"} />
-              <ConjugatedVerb pronoun={"Elles"} conjugation={"sont"} />
+            <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <VolumeButton
+                  onPressVolumeButton={() => {
+                    /* */
+                  }}
+                  color={"#787878"}
+                />
+              </View>
+              <View>
+                <ConjugatedVerb pronoun={"Je"} conjugation={"suis"} />
+                <ConjugatedVerb pronoun={"Tu"} conjugation={"es"} />
+                <ConjugatedVerb pronoun={"Il"} conjugation={"est"} />
+                <ConjugatedVerb pronoun={"Elle"} conjugation={"est"} />
+                <ConjugatedVerb pronoun={"Nous"} conjugation={"sommes"} />
+                <ConjugatedVerb pronoun={"Vous"} conjugation={"êtes"} />
+                <ConjugatedVerb pronoun={"Ils"} conjugation={"sont"} />
+                <ConjugatedVerb pronoun={"Elles"} conjugation={"sont"} />
+              </View>
             </View>
           </>
         }
@@ -190,23 +229,33 @@ const PointExplicatifTab = () => {
         }}
       />
       <CardWithTitle
-        title={"Conjugaison"}
+        title={"Exemples"}
         onPressVolumeButton={() => {
           /** */
         }}
         content={
-          <Text style={{ fontSize: 16 }}>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>Je suis</Text> un chat.{"\n"}
+          <View style={{ display: "flex", flexDirection: "row", gap: 20 }}>
+            <VolumeButton
+              onPressVolumeButton={() => {
+                /* */
+              }}
+              color={"#787878"}
+            />
+            <Text style={{ fontSize: 16, color: "#787878" }}>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Je suis</Text> un chat.
+                {"\n"}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Tu es</Text> un human.
+                {"\n"}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
+                {"\n"}
+              </Text>
             </Text>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>Tu es</Text> un human.{"\n"}
-            </Text>
-            <Text>
-              <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
-              {"\n"}
-            </Text>
-          </Text>
+          </View>
         }
       />
     </View>
@@ -224,10 +273,17 @@ const ConjugatedVerb = ({ pronoun, conjugation }) => {
     >
       <View
         style={{
-          width: "50%",
+          width: "37%",
         }}
       >
-        <Text style={{ width: "100%", fontSize: 20, textAlign: "right" }}>
+        <Text
+          style={{
+            width: "100%",
+            fontSize: 20,
+            textAlign: "right",
+            color: "#787878",
+          }}
+        >
           {pronoun}{" "}
         </Text>
       </View>
@@ -236,7 +292,14 @@ const ConjugatedVerb = ({ pronoun, conjugation }) => {
           width: "50%",
         }}
       >
-        <Text style={{ fontWeight: "bold", fontStyle: "italic", fontSize: 20 }}>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontStyle: "italic",
+            fontSize: 20,
+            color: "#787878",
+          }}
+        >
           {conjugation}
         </Text>
       </View>
@@ -244,7 +307,7 @@ const ConjugatedVerb = ({ pronoun, conjugation }) => {
   );
 };
 
-const CardWithTitle = ({ title, content, onPressVolumeButton }) => {
+const CardWithTitle = ({ title, content }) => {
   return (
     <View>
       <View
@@ -255,12 +318,13 @@ const CardWithTitle = ({ title, content, onPressVolumeButton }) => {
           alignItems: "center",
         }}
       >
-        <VolumeButton onPressVolumeButton={onPressVolumeButton} />
         <Text
           style={{
             fontWeight: "bold",
             fontSize: 24,
             color: "#4354EF",
+            marginLeft: 20,
+            marginTop: 20,
           }}
         >
           {title}
@@ -270,6 +334,7 @@ const CardWithTitle = ({ title, content, onPressVolumeButton }) => {
         style={{
           backgroundColor: "#F5F5F5",
           margin: 20,
+          marginTop: 10,
           borderRadius: 20,
           padding: 12,
         }}
