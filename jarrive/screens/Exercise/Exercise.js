@@ -1,4 +1,7 @@
 import {
+  StyleSheet,
+  PanResponder,
+  Dimensions,
   Image,
   ImageBackground,
   Pressable,
@@ -15,18 +18,19 @@ import stampDisabled from "../../assets/stamp_disabled.png";
 import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
 
 const Exercise = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState("point explicatif");
+  const [activeTab, setActiveTab] = useState("exercicies");
 
   return (
     <View>
       <View
         style={{
           height: 300,
+          marginBottom: -20,
         }}
       >
         <ImageBackground
@@ -34,6 +38,7 @@ const Exercise = ({ navigation }) => {
           style={{
             height: "100%",
             width: "100%",
+            zIndex: 10,
           }}
           resizeMode="cover"
         >
@@ -170,10 +175,10 @@ const Exercise = ({ navigation }) => {
           </View>
         </ImageBackground>
       </View>
-      <View>
+      <ScrollView>
         {activeTab === "point explicatif" && <PointExplicatifTab />}
-        {activeTab === "selos" && <ExerciciesTab />}
-      </View>
+        {activeTab === "exercicies" && <DraggableQnA />}
+      </ScrollView>
     </View>
   );
 };
@@ -252,7 +257,6 @@ const PointExplicatifTab = () => {
               </Text>
               <Text>
                 <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
-                {"\n"}
               </Text>
             </Text>
           </View>
@@ -352,7 +356,289 @@ const CardWithTitle = ({ title, content }) => {
 };
 
 const ExerciciesTab = () => {
-  return <></>;
+  return (
+    <View
+      style={{ backgroundColor: "#141B23", height: "100%", paddingTop: 20 }}
+    >
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
+    </View>
+  );
 };
+
+const { width, height } = Dimensions.get("window");
+
+const questions = [
+  { id: 1, text: "What is the capital of France?", correctAnswer: "Paris" },
+  { id: 2, text: "What is 2 + 2?", correctAnswer: "4" },
+];
+
+const answers = [
+  { id: 1, text: "Paris" },
+  { id: 2, text: "4" },
+];
+
+const DraggableQnA = () => {
+  const [droppedAnswers, setDroppedAnswers] = useState({});
+  const [correctAnswersSet, setCorrectAnswersSet] = useState(new Set());
+  const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
+  const totalQuestions = questions.length;
+  const questionRefs = useRef({}); // Store references to question containers
+
+  const checkDropZone = (gesture, answerText) => {
+    const zones = Object.entries(questionRefs.current);
+
+    const updatedCorrectAnswersSet = new Set(correctAnswersSet); // To avoid duplicates
+
+    for (const [questionId, { ref, layout }] of zones) {
+      if (!layout) {
+        console.log(
+          `Layout for question ID ${questionId} is not yet available.`
+        );
+        ref.measure((x, y, width, height, pageX, pageY) => {
+          questionRefs.current[questionId].layout = {
+            pageX,
+            pageY,
+            width,
+            height,
+          };
+          console.log(`Measured layout for question ID ${questionId}:`, {
+            pageX,
+            pageY,
+            width,
+            height,
+          });
+        });
+        continue;
+      }
+
+      const { pageX, pageY, width, height } = layout;
+
+      if (
+        gesture.moveX >= pageX &&
+        gesture.moveX <= pageX + width &&
+        gesture.moveY >= pageY &&
+        gesture.moveY <= pageY + height
+      ) {
+        // Safely find the question by ID and check for correct answer
+        const question = questions.find((q) => q.id === Number(questionId));
+        if (question) {
+          // Only increment count if the answer is correct
+          if (
+            answerText === question.correctAnswer &&
+            !updatedCorrectAnswersSet.has(questionId)
+          ) {
+            updatedCorrectAnswersSet.add(questionId);
+          }
+        } else {
+          console.log(`Question with ID ${questionId} not found.`);
+        }
+
+        setDroppedAnswers((prev) => ({
+          ...prev,
+          [questionId]: answerText,
+        }));
+      } else {
+        console.log(
+          `Answer "${answerText}" not dropped in question ID ${questionId}.`
+        );
+      }
+    }
+
+    // Update the correct answer count based on the updated set of correct answers
+    setCorrectAnswersSet(updatedCorrectAnswersSet); // To track answered questions
+    setCorrectAnswerCount(updatedCorrectAnswersSet.size); // Set the correct answer count
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.questionsContainer}>
+        {questions.map((question) => (
+          <View
+            key={question.id}
+            style={styles.questionBox}
+            ref={(ref) => {
+              questionRefs.current[question.id] = { ref, layout: null };
+            }}
+            onLayout={() => {
+              questionRefs.current[question.id]?.ref?.measure(
+                (x, y, width, height, pageX, pageY) => {
+                  questionRefs.current[question.id].layout = {
+                    pageX,
+                    pageY,
+                    width,
+                    height,
+                  };
+                  console.log(`Layout for question ID ${question.id}:`, {
+                    pageX,
+                    pageY,
+                    width,
+                    height,
+                  });
+                }
+              );
+            }}
+          >
+            <Text style={styles.questionText}>{question.text}</Text>
+            <View
+              style={[
+                styles.dropZone,
+                droppedAnswers[question.id] === question.correctAnswer
+                  ? styles.correctDropZone
+                  : styles.defaultDropZone,
+              ]}
+            >
+              <Text>{droppedAnswers[question.id] || "Drop Answer Here"}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+      <View style={styles.answersContainer}>
+        {answers.map((answer) => (
+          <Draggable
+            key={answer.id}
+            answer={answer.text}
+            onDrop={(gesture) => checkDropZone(gesture, answer.text)}
+          />
+        ))}
+      </View>
+      <ProgressBar
+        correctAnswers={correctAnswerCount}
+        totalQuestions={totalQuestions}
+      />
+    </View>
+  );
+};
+
+const Draggable = ({ answer, onDrop }) => {
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event(
+        [
+          null,
+          { dx: pan.x, dy: pan.y }, // Update position
+        ],
+        { useNativeDriver: false }
+      ),
+      onPanResponderRelease: (_, gesture) => {
+        onDrop(gesture); // Call onDrop with gesture information
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 }, // Return to original position
+          useNativeDriver: false,
+        }).start();
+      },
+    })
+  ).current;
+
+  return (
+    <Animated.View
+      style={[styles.draggable, pan.getLayout()]}
+      {...panResponder.panHandlers}
+    >
+      <Text style={styles.answerText}>{answer}</Text>
+    </Animated.View>
+  );
+};
+
+const ProgressBar = ({ totalQuestions, correctAnswers }) => {
+  const progress = correctAnswers / totalQuestions;
+
+  return (
+    <View style={styles.progressBarContainer}>
+      <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f0f0f0",
+    padding: 16,
+  },
+  questionsContainer: {
+    flex: 2,
+    marginBottom: 20,
+  },
+  questionBox: {
+    marginBottom: 16,
+  },
+  questionText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  dropZone: {
+    height: 50,
+    backgroundColor: "#d3d3d3",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  defaultDropZone: {
+    borderWidth: 1,
+    borderColor: "#000",
+  },
+  correctDropZone: {
+    borderWidth: 2,
+    borderColor: "green",
+  },
+  answersContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  draggable: {
+    width: 100,
+    height: 50,
+    backgroundColor: "#007AFF",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  answerText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  progressBarContainer: {
+    height: 20,
+    width: "80%",
+    backgroundColor: "#e0e0e0",
+    borderRadius: 10,
+    overflow: "hidden",
+    marginVertical: 10,
+  },
+  progressBar: {
+    height: "100%",
+    backgroundColor: "#4caf50",
+  },
+});
 
 export default Exercise;
