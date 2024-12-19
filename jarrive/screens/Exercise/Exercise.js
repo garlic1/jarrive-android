@@ -410,16 +410,20 @@ const { width, height } = Dimensions.get("window");
 const questions = [
   { id: 1, text: "What is the capital of France?", correctAnswer: "Paris" },
   { id: 2, text: "What is 2 + 2?", correctAnswer: "4" },
+  { id: 3, text: "What is 3 + 2?", correctAnswer: "5" },
+  { id: 4, text: "What is 4 + 4?", correctAnswer: "8" },
 ];
 
 const answers = [
   { id: 1, text: "Paris" },
   { id: 2, text: "4" },
+  { id: 3, text: "5" },
+  { id: 4, text: "8" },
 ];
 
 const CIRCLE_RADIUS = 30;
 
-const Draggable = ({ containerPosition }) => {
+const Draggable = ({ text, containerPosition }) => {
   const pan = useRef(new Animated.ValueXY()).current;
   const [showDraggable, setShowDraggable] = useState(true);
   const [opacity] = useState(new Animated.Value(1));
@@ -457,7 +461,9 @@ const Draggable = ({ containerPosition }) => {
     if (!containerPosition) return false;
     const { x, y, width, height } = containerPosition;
 
-    {console.log('containerPosition', containerPosition)}
+    {
+      console.log("containerPosition", containerPosition);
+    }
     return (
       gesture.moveY > y &&
       gesture.moveY < y + height &&
@@ -480,43 +486,66 @@ const Draggable = ({ containerPosition }) => {
         {
           backgroundColor: "skyblue",
           width: CIRCLE_RADIUS * 2,
-          height: CIRCLE_RADIUS * 2,
+          height: CIRCLE_RADIUS,
           borderRadius: CIRCLE_RADIUS,
         },
       ]}
-    />
+    >
+      <Text>{text}</Text>
+    </Animated.View>
   );
 };
 
 const DraggableQnA = () => {
-  const dropZoneRef = useRef(null);
-  const [containerPosition, setContainerPosition] = useState(null);
+  const dropZoneRefs = useRef([]);
+  const [containerPositions, setContainerPositions] = useState([]);
 
-  const handleDropAreaLayout = useCallback((event) => {
-    // console.log("dropZoneRef", dropZoneRef.current);
-    if (dropZoneRef) {
-      dropZoneRef.current.measureInWindow((x, y, width, height) => {
-        setContainerPosition({ x, y, width, height });
+  useEffect(() => {
+    dropZoneRefs.current = questions.map(() => React.createRef());
+    setContainerPositions(Array(questions.length).fill(null));
+  }, [questions]);
+
+  const handleDropAreaLayout = useCallback((event, index) => {
+    // console.log("dropZoneRefs[index]", dropZoneRefs[index]);
+    if (dropZoneRefs[index]) {
+      dropZoneRefs[index].current.measureInWindow((x, y, width, height) => {
+        console.log('x, y, width, height, index', x, y, width, height, index)
+        setContainerPositions((containerPositions) =>
+          containerPositions.map((containerPosition, i) =>
+            i === index ? { x, y, width, height } : containerPosition
+          )
+        );
       });
     }
-  }, []);
+  }, [dropZoneRefs]);
 
   return (
     <View style={styles.mainContainer}>
-      <View
-        style={styles.dropZone}
-        ref={dropZoneRef}
-        onLayout={handleDropAreaLayout}
-      >
-        <Text style={styles.text}>Drop them here!</Text>
-      </View>
+      {questions.map((question, index) => (
+        <View
+          style={{
+            width: 200,
+            height: 50,
+            borderRadius: 3,
+            backgroundColor: "#D9D9D9",
+            marginBottom: 5,
+          }}
+          ref={dropZoneRefs[index]}
+          onLayout={(event) => handleDropAreaLayout(event, index)}
+          key={index}
+        >
+          <Text>{question.text}</Text>
+        </View>
+      ))}
       <View style={styles.ballContainer} />
       <View style={styles.row}>
-        <Draggable containerPosition={containerPosition} />
-        <Draggable containerPosition={containerPosition} />
-        <Draggable containerPosition={containerPosition} />
-        <Draggable containerPosition={containerPosition} />
-        <Draggable containerPosition={containerPosition} />
+        {answers.map((answer, index) => (
+          <Draggable
+            text={answer.text}
+            containerPosition={containerPositions[index]}
+            key={answer.id}
+          />
+        ))}
       </View>
     </View>
   );
