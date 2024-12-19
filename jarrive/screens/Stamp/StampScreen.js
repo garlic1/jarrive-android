@@ -234,7 +234,7 @@ const StampScreen = ({ navigation }) => {
       </View>
       <View style={{ marginTop: 150 }}>
         {activeTab === "mensagem" && <MessageTab />}
-        {activeTab === "selos" && <StampsTab />}
+        {activeTab === "selos" && <StampsTab navigation={navigation} />}
       </View>
       <Pressable
         style={{
@@ -321,7 +321,7 @@ const MessageTab = () => {
   );
 };
 
-const StampsTab = () => {
+const StampsTab = ({ navigation }) => {
   const stamps = [
     {
       type: "verbes reguliers",
@@ -365,6 +365,7 @@ const StampsTab = () => {
               number={number}
               title={title}
               variant={variant}
+              navigation={navigation}
             />
           ))}
         </ScrollView>
@@ -373,7 +374,7 @@ const StampsTab = () => {
   );
 };
 
-const Stamp = ({ type, number, title, variant }) => {
+const Stamp = ({ type, number, title, variant, navigation }) => {
   const VARIANTS = {
     disabled: stampDisabled,
     achieved: stampAchieved,
@@ -397,17 +398,18 @@ const Stamp = ({ type, number, title, variant }) => {
           height: 160,
         }}
       >
-        <View
+        <Pressable
           style={{
             margin: 25,
           }}
+          onPress={() => navigation.navigate("Exercise")}
         >
           <Text style={textStyle[variant]}>{type}</Text>
           <Text style={textStyle[variant]}>{number + "\n"}</Text>
           <Text style={{ ...textStyle[variant], fontWeight: "bold" }}>
             {title}
           </Text>
-        </View>
+        </Pressable>
       </ImageBackground>
     </View>
   );

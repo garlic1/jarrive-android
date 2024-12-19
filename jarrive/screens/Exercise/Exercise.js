@@ -18,7 +18,7 @@ import stampDisabled from "../../assets/stamp_disabled.png";
 import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
 
@@ -26,160 +26,168 @@ const Exercise = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("exercicies");
 
   return (
-    <View>
-      <View
-        style={{
-          height: 300,
-          marginBottom: -20,
-        }}
-      >
-        <ImageBackground
-          source={exercisesHeader}
+    <>
+      <View>
+        <View
           style={{
-            height: "100%",
-            width: "100%",
-            zIndex: 10,
+            height: 300,
+            marginBottom: -20,
           }}
-          resizeMode="cover"
         >
-          <View
+          <ImageBackground
+            source={exercisesHeader}
             style={{
-              marginLeft: 10,
+              height: "100%",
               width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
+              zIndex: 10,
             }}
+            resizeMode="cover"
           >
-            <View>
-              <View
-                style={{
-                  marginTop: StatusBar.currentHeight + 25 || 25,
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: 2,
-                }}
-              >
-                <Pressable>
-                  <Ionicons
-                    size={20}
-                    name="chevron-back-outline"
-                    color="#4354EF"
-                  />
-                </Pressable>
-                <Text
-                  style={{
-                    color: "#4354EF",
-                    fontSize: 16,
-                    marginBottom: 20,
-                  }}
-                >
-                  Carte Postale
-                </Text>
-                <View></View>
-              </View>
-              <View>
-                <Text
-                  style={{ color: "#4354EF", fontWeight: "bold", fontSize: 16 }}
-                >
-                  Verbes
-                </Text>
-                <Text
-                  style={{
-                    color: "#4354EF",
-                    fontWeight: "bold",
-                    marginBottom: 30,
-                    fontSize: 16,
-                  }}
-                >
-                  #001
-                </Text>
-                <Text
-                  style={{
-                    color: "#4354EF",
-                    fontWeight: "900",
-                    fontSize: 24,
-                    marginBottom: 20,
-                  }}
-                >
-                  Être
-                </Text>
-              </View>
-
-              <VolumeButton
-                color={"#4354EF"}
-                onPressVolumeButton={() => {
-                  /* */
-                }}
-              />
-            </View>
             <View
               style={{
-                marginTop: StatusBar.height + 100 || 100,
+                marginLeft: 10,
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
               }}
             >
-              <Pressable
+              <View>
+                <View
+                  style={{
+                    marginTop: StatusBar.currentHeight + 25 || 25,
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 2,
+                  }}
+                >
+                  <Pressable>
+                    <Ionicons
+                      size={20}
+                      name="chevron-back-outline"
+                      color="#4354EF"
+                    />
+                  </Pressable>
+                  <Text
+                    style={{
+                      color: "#4354EF",
+                      fontSize: 16,
+                      marginBottom: 20,
+                    }}
+                  >
+                    Carte Postale
+                  </Text>
+                  <View></View>
+                </View>
+                <View>
+                  <Text
+                    style={{
+                      color: "#4354EF",
+                      fontWeight: "bold",
+                      fontSize: 16,
+                    }}
+                  >
+                    Verbes
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#4354EF",
+                      fontWeight: "bold",
+                      marginBottom: 30,
+                      fontSize: 16,
+                    }}
+                  >
+                    #001
+                  </Text>
+                  <Text
+                    style={{
+                      color: "#4354EF",
+                      fontWeight: "900",
+                      fontSize: 24,
+                      marginBottom: 20,
+                    }}
+                  >
+                    Être
+                  </Text>
+                </View>
+
+                <VolumeButton
+                  color={"#4354EF"}
+                  onPressVolumeButton={() => {
+                    /* */
+                  }}
+                />
+              </View>
+              <View
                 style={{
-                  color:
-                    activeTab === "point explicatif" ? "#FFFFFF" : "#D9D9D9",
-                  backgroundColor:
-                    activeTab === "point explicatif" ? "#4354EF" : "#F5F5F5",
-                  borderRadius: 20,
-                  elevation: 4,
-                  paddingVertical: 5,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: 165,
-                  marginBottom: 10,
+                  marginTop: StatusBar.height + 100 || 100,
                 }}
-                onPress={() => setActiveTab("point explicatif")}
               >
-                <Text
+                <Pressable
                   style={{
                     color:
                       activeTab === "point explicatif" ? "#FFFFFF" : "#D9D9D9",
-                    fontSize: 16,
-                    fontWeight: "bold",
+                    backgroundColor:
+                      activeTab === "point explicatif" ? "#4354EF" : "#F5F5F5",
+                    borderRadius: 20,
+                    elevation: 4,
+                    paddingVertical: 5,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 165,
+                    marginBottom: 10,
                   }}
+                  onPress={() => setActiveTab("point explicatif")}
                 >
-                  Point Explicatif
-                </Text>
-              </Pressable>
-              <Pressable
-                style={{
-                  color: activeTab === "exercicies" ? "#FFFFFF" : "#D9D9D9",
-                  backgroundColor:
-                    activeTab === "exercicies" ? "#4354EF" : "#F5F5F5",
-                  borderRadius: 20,
-                  elevation: 4,
-                  paddingVertical: 5,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: 165,
-                }}
-                onPress={() => setActiveTab("exercicies")}
-              >
-                <Text
+                  <Text
+                    style={{
+                      color:
+                        activeTab === "point explicatif"
+                          ? "#FFFFFF"
+                          : "#D9D9D9",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Point Explicatif
+                  </Text>
+                </Pressable>
+                <Pressable
                   style={{
                     color: activeTab === "exercicies" ? "#FFFFFF" : "#D9D9D9",
-                    fontSize: 16,
-                    fontWeight: "bold",
+                    backgroundColor:
+                      activeTab === "exercicies" ? "#4354EF" : "#F5F5F5",
+                    borderRadius: 20,
+                    elevation: 4,
+                    paddingVertical: 5,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 165,
                   }}
+                  onPress={() => setActiveTab("exercicies")}
                 >
-                  Exercicies
-                </Text>
-              </Pressable>
+                  <Text
+                    style={{
+                      color: activeTab === "exercicies" ? "#FFFFFF" : "#D9D9D9",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Exercicies
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </ImageBackground>
+          </ImageBackground>
+        </View>
       </View>
       <ScrollView>
         {activeTab === "point explicatif" && <PointExplicatifTab />}
         {activeTab === "exercicies" && <DraggableQnA />}
       </ScrollView>
-    </View>
+    </>
   );
 };
 
@@ -409,29 +417,14 @@ const DraggableQnA = () => {
   const questionRefs = useRef({}); // Store references to question containers
 
   const checkDropZone = (gesture, answerText) => {
-    const zones = Object.entries(questionRefs.current);
+    console.log("Checking drop zones...");
 
-    const updatedCorrectAnswersSet = new Set(correctAnswersSet); // To avoid duplicates
+    const zones = Object.entries(questionRefs.current);
+    const updatedCorrectAnswersSet = new Set(correctAnswersSet);
 
     for (const [questionId, { ref, layout }] of zones) {
       if (!layout) {
-        console.log(
-          `Layout for question ID ${questionId} is not yet available.`
-        );
-        ref.measure((x, y, width, height, pageX, pageY) => {
-          questionRefs.current[questionId].layout = {
-            pageX,
-            pageY,
-            width,
-            height,
-          };
-          console.log(`Measured layout for question ID ${questionId}:`, {
-            pageX,
-            pageY,
-            width,
-            height,
-          });
-        });
+        console.log(`Layout for question ID ${questionId} not available.`);
         continue;
       }
 
@@ -443,10 +436,12 @@ const DraggableQnA = () => {
         gesture.moveY >= pageY &&
         gesture.moveY <= pageY + height
       ) {
-        // Safely find the question by ID and check for correct answer
-        const question = questions.find((q) => q.id === Number(questionId));
+        console.log(
+          `Answer "${answerText}" dropped in question ID ${questionId}.`
+        );
+
+        const question = questions.find((q) => q.id === questionId);
         if (question) {
-          // Only increment count if the answer is correct
           if (
             answerText === question.correctAnswer &&
             !updatedCorrectAnswersSet.has(questionId)
@@ -461,17 +456,40 @@ const DraggableQnA = () => {
           ...prev,
           [questionId]: answerText,
         }));
-      } else {
-        console.log(
-          `Answer "${answerText}" not dropped in question ID ${questionId}.`
-        );
       }
     }
 
-    // Update the correct answer count based on the updated set of correct answers
-    setCorrectAnswersSet(updatedCorrectAnswersSet); // To track answered questions
-    setCorrectAnswerCount(updatedCorrectAnswersSet.size); // Set the correct answer count
+    setCorrectAnswersSet(updatedCorrectAnswersSet);
+    setCorrectAnswerCount(updatedCorrectAnswersSet.size);
+
+    console.log(`Correct answers: ${updatedCorrectAnswersSet.size}`);
   };
+
+  // Measure the layout of all question zones
+  useLayoutEffect(() => {
+    console.log("Measuring layouts for question zones...");
+
+    const measureLayouts = () => {
+      Object.entries(questionRefs.current).forEach(([questionId, { ref }]) => {
+        ref.measure((x, y, width, height, pageX, pageY) => {
+          questionRefs.current[questionId].layout = {
+            pageX,
+            pageY,
+            width,
+            height,
+          };
+          console.log(`Measured layout for question ID ${questionId}:`, {
+            pageX,
+            pageY,
+            width,
+            height,
+          });
+        });
+      });
+    };
+
+    measureLayouts();
+  }, [questions, Object.keys(questionRefs.current).length]); // Re-run layout measurement if the questions array changes
 
   return (
     <View style={styles.container}>
