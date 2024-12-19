@@ -10,6 +10,8 @@ import {
   StatusBar,
   Animated,
   ScrollView,
+  UIManager,
+  findNodeHandle,
 } from "react-native";
 import backgroundChat from "../../assets/background_chat.png";
 import cartePostaleFront from "../../assets/carte_postale/carte_postale_front.png";
@@ -18,7 +20,13 @@ import stampDisabled from "../../assets/stamp_disabled.png";
 import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
 
@@ -409,178 +417,108 @@ const answers = [
   { id: 2, text: "4" },
 ];
 
-const DraggableQnA = () => {
-  const [droppedAnswers, setDroppedAnswers] = useState({});
-  const [correctAnswersSet, setCorrectAnswersSet] = useState(new Set());
-  const [correctAnswerCount, setCorrectAnswerCount] = useState(0);
-  const totalQuestions = questions.length;
-  const questionRefs = useRef({}); // Store references to question containers
+const CIRCLE_RADIUS = 30;
 
-  const checkDropZone = (gesture, answerText) => {
-    console.log("Checking drop zones...");
-
-    const zones = Object.entries(questionRefs.current);
-    const updatedCorrectAnswersSet = new Set(correctAnswersSet);
-
-    for (const [questionId, { ref, layout }] of zones) {
-      if (!layout) {
-        console.log(`Layout for question ID ${questionId} not available.`);
-        continue;
-      }
-
-      const { pageX, pageY, width, height } = layout;
-
-      if (
-        gesture.moveX >= pageX &&
-        gesture.moveX <= pageX + width &&
-        gesture.moveY >= pageY &&
-        gesture.moveY <= pageY + height
-      ) {
-        console.log(
-          `Answer "${answerText}" dropped in question ID ${questionId}.`
-        );
-
-        const question = questions.find((q) => q.id === questionId);
-        if (question) {
-          if (
-            answerText === question.correctAnswer &&
-            !updatedCorrectAnswersSet.has(questionId)
-          ) {
-            updatedCorrectAnswersSet.add(questionId);
-          }
-        } else {
-          console.log(`Question with ID ${questionId} not found.`);
-        }
-
-        setDroppedAnswers((prev) => ({
-          ...prev,
-          [questionId]: answerText,
-        }));
-      }
-    }
-
-    setCorrectAnswersSet(updatedCorrectAnswersSet);
-    setCorrectAnswerCount(updatedCorrectAnswersSet.size);
-
-    console.log(`Correct answers: ${updatedCorrectAnswersSet.size}`);
-  };
-
-  // Measure the layout of all question zones
-  useLayoutEffect(() => {
-    console.log("Measuring layouts for question zones...");
-
-    const measureLayouts = () => {
-      Object.entries(questionRefs.current).forEach(([questionId, { ref }]) => {
-        ref.measure((x, y, width, height, pageX, pageY) => {
-          questionRefs.current[questionId].layout = {
-            pageX,
-            pageY,
-            width,
-            height,
-          };
-          console.log(`Measured layout for question ID ${questionId}:`, {
-            pageX,
-            pageY,
-            width,
-            height,
-          });
-        });
-      });
-    };
-
-    measureLayouts();
-  }, [questions, Object.keys(questionRefs.current).length]); // Re-run layout measurement if the questions array changes
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.questionsContainer}>
-        {questions.map((question) => (
-          <View
-            key={question.id}
-            style={styles.questionBox}
-            ref={(ref) => {
-              questionRefs.current[question.id] = { ref, layout: null };
-            }}
-            onLayout={() => {
-              questionRefs.current[question.id]?.ref?.measure(
-                (x, y, width, height, pageX, pageY) => {
-                  questionRefs.current[question.id].layout = {
-                    pageX,
-                    pageY,
-                    width,
-                    height,
-                  };
-                  console.log(`Layout for question ID ${question.id}:`, {
-                    pageX,
-                    pageY,
-                    width,
-                    height,
-                  });
-                }
-              );
-            }}
-          >
-            <Text style={styles.questionText}>{question.text}</Text>
-            <View
-              style={[
-                styles.dropZone,
-                droppedAnswers[question.id] === question.correctAnswer
-                  ? styles.correctDropZone
-                  : styles.defaultDropZone,
-              ]}
-            >
-              <Text>{droppedAnswers[question.id] || "Drop Answer Here"}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-      <View style={styles.answersContainer}>
-        {answers.map((answer) => (
-          <Draggable
-            key={answer.id}
-            answer={answer.text}
-            onDrop={(gesture) => checkDropZone(gesture, answer.text)}
-          />
-        ))}
-      </View>
-      <ProgressBar
-        correctAnswers={correctAnswerCount}
-        totalQuestions={totalQuestions}
-      />
-    </View>
-  );
-};
-
-const Draggable = ({ answer, onDrop }) => {
+const Draggable = ({ containerPosition }) => {
   const pan = useRef(new Animated.ValueXY()).current;
+  const [showDraggable, setShowDraggable] = useState(true);
+  const [opacity] = useState(new Animated.Value(1));
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event(
-        [
-          null,
-          { dx: pan.x, dy: pan.y }, // Update position
-        ],
-        { useNativeDriver: false }
-      ),
-      onPanResponderRelease: (_, gesture) => {
-        onDrop(gesture); // Call onDrop with gesture information
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 }, // Return to original position
-          useNativeDriver: false,
-        }).start();
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false,
+      }),
+      onPanResponderRelease: (e, gesture) => {
+        if (isDropArea(gesture)) {
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: false,
+          }).start(() => setShowDraggable(false));
+        } else {
+          Animated.spring(pan, {
+            toValue: { x: 0, y: 0 },
+            friction: 5,
+            useNativeDriver: false,
+          }).start();
+        }
       },
     })
   ).current;
 
+  useLayoutEffect(() => {
+    const listener = pan.addListener((value) => value);
+    return () => pan.removeListener(listener);
+  }, [pan]);
+
+  const isDropArea = (gesture) => {
+    if (!containerPosition) return false;
+    const { x, y, width, height } = containerPosition;
+
+    {console.log('containerPosition', containerPosition)}
+    return (
+      gesture.moveY > y &&
+      gesture.moveY < y + height &&
+      gesture.moveX > x &&
+      gesture.moveX < x + width
+    );
+  };
+  if (!showDraggable) return null;
+
+  const panStyle = {
+    transform: pan.getTranslateTransform(),
+    opacity,
+  };
+
   return (
     <Animated.View
-      style={[styles.draggable, pan.getLayout()]}
       {...panResponder.panHandlers}
-    >
-      <Text style={styles.answerText}>{answer}</Text>
-    </Animated.View>
+      style={[
+        panStyle,
+        {
+          backgroundColor: "skyblue",
+          width: CIRCLE_RADIUS * 2,
+          height: CIRCLE_RADIUS * 2,
+          borderRadius: CIRCLE_RADIUS,
+        },
+      ]}
+    />
+  );
+};
+
+const DraggableQnA = () => {
+  const dropZoneRef = useRef(null);
+  const [containerPosition, setContainerPosition] = useState(null);
+
+  const handleDropAreaLayout = useCallback((event) => {
+    // console.log("dropZoneRef", dropZoneRef.current);
+    if (dropZoneRef) {
+      dropZoneRef.current.measureInWindow((x, y, width, height) => {
+        setContainerPosition({ x, y, width, height });
+      });
+    }
+  }, []);
+
+  return (
+    <View style={styles.mainContainer}>
+      <View
+        style={styles.dropZone}
+        ref={dropZoneRef}
+        onLayout={handleDropAreaLayout}
+      >
+        <Text style={styles.text}>Drop them here!</Text>
+      </View>
+      <View style={styles.ballContainer} />
+      <View style={styles.row}>
+        <Draggable containerPosition={containerPosition} />
+        <Draggable containerPosition={containerPosition} />
+        <Draggable containerPosition={containerPosition} />
+        <Draggable containerPosition={containerPosition} />
+        <Draggable containerPosition={containerPosition} />
+      </View>
+    </View>
   );
 };
 
@@ -595,10 +533,32 @@ const ProgressBar = ({ totalQuestions, correctAnswers }) => {
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    marginTop: 20,
+  },
+  ballContainer: {
+    height: 300,
+  },
+  row: {
+    flexDirection: "row",
+  },
+  dropZone: {
+    height: 200,
+    backgroundColor: "#00334d",
+  },
+  text: {
+    padding: 25,
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 25,
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "#f0f0f0",
     padding: 16,
+    marginTop: 50,
   },
   questionsContainer: {
     flex: 2,
@@ -611,13 +571,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
-  },
-  dropZone: {
-    height: 50,
-    backgroundColor: "#d3d3d3",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
   },
   defaultDropZone: {
     borderWidth: 1,
