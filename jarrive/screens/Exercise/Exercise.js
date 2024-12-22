@@ -21,6 +21,7 @@ import stampNormal from "../../assets/stamp.png";
 import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
 import React, {
+  createRef,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -424,9 +425,16 @@ const answers = [
 const CIRCLE_RADIUS = 30;
 
 const Draggable = ({ text, containerPosition }) => {
+  const positionInside = containerPosition;
   const pan = useRef(new Animated.ValueXY()).current;
   const [showDraggable, setShowDraggable] = useState(true);
   const [opacity] = useState(new Animated.Value(1));
+  const positionRef = useRef(containerPosition);
+
+  // Keep positionRef updated with the latest containerPosition
+  useLayoutEffect(() => {
+    positionRef.current = containerPosition;
+  }, [containerPosition]);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -458,12 +466,12 @@ const Draggable = ({ text, containerPosition }) => {
   }, [pan]);
 
   const isDropArea = (gesture) => {
-    if (!containerPosition) return false;
-    const { x, y, width, height } = containerPosition;
-
     {
-      console.log("containerPosition", containerPosition);
+      console.log("\n\ncontainerPositionIsDropArea", positionRef.current);
     }
+    if (!positionRef) return false;
+    const { x, y, width, height } = positionRef.current;
+
     return (
       gesture.moveY > y &&
       gesture.moveY < y + height &&
@@ -479,45 +487,52 @@ const Draggable = ({ text, containerPosition }) => {
   };
 
   return (
-    <Animated.View
-      {...panResponder.panHandlers}
-      style={[
-        panStyle,
-        {
-          backgroundColor: "skyblue",
-          width: CIRCLE_RADIUS * 2,
-          height: CIRCLE_RADIUS,
-          borderRadius: CIRCLE_RADIUS,
-        },
-      ]}
-    >
-      <Text>{text}</Text>
-    </Animated.View>
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[
+          panStyle,
+          {
+            backgroundColor: "skyblue",
+            width: CIRCLE_RADIUS * 2,
+            height: CIRCLE_RADIUS,
+            borderRadius: CIRCLE_RADIUS,
+          },
+        ]}
+      >
+        <Text>{text}</Text>
+      </Animated.View>
   );
 };
 
 const DraggableQnA = () => {
-  const dropZoneRefs = useRef([]);
+  const dropZoneRefs = useRef(questions.map(() => createRef()));
   const [containerPositions, setContainerPositions] = useState([]);
 
-  useEffect(() => {
-    dropZoneRefs.current = questions.map(() => React.createRef());
-    setContainerPositions(Array(questions.length).fill(null));
-  }, [questions]);
-
-  const handleDropAreaLayout = useCallback((event, index) => {
-    // console.log("dropZoneRefs[index]", dropZoneRefs[index]);
-    if (dropZoneRefs[index]) {
-      dropZoneRefs[index].current.measureInWindow((x, y, width, height) => {
-        console.log('x, y, width, height, index', x, y, width, height, index)
-        setContainerPositions((containerPositions) =>
-          containerPositions.map((containerPosition, i) =>
-            i === index ? { x, y, width, height } : containerPosition
-          )
+  const handleDropAreaLayout = useCallback(
+    (event, index) => {
+      // console.log("dropZoneRefs[index]", dropZoneRefs[index]);
+      console.log("dropZoneRefs", dropZoneRefs.current[index]);
+      if (dropZoneRefs.current[index]) {
+        dropZoneRefs.current[index].current.measureInWindow(
+          (x, y, width, height) => {
+            console.log(
+              "x, y, width, height, index",
+              x,
+              y,
+              width,
+              height,
+              index
+            );
+            setContainerPositions((containerPositions) => [
+              ...containerPositions,
+              { x, y, width, height },
+            ]);
+          }
         );
-      });
-    }
-  }, [dropZoneRefs]);
+      }
+    },
+    [dropZoneRefs]
+  );
 
   return (
     <View style={styles.mainContainer}>
@@ -530,7 +545,7 @@ const DraggableQnA = () => {
             backgroundColor: "#D9D9D9",
             marginBottom: 5,
           }}
-          ref={dropZoneRefs[index]}
+          ref={dropZoneRefs.current[index]}
           onLayout={(event) => handleDropAreaLayout(event, index)}
           key={index}
         >
@@ -546,6 +561,9 @@ const DraggableQnA = () => {
             key={answer.id}
           />
         ))}
+        {console.log("containerPositions0\n", containerPositions[0])}
+        {console.log("containerPositions1\n", containerPositions[1])}
+        {console.log("containerPositions2\n", containerPositions[2])}
       </View>
     </View>
   );
@@ -567,7 +585,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   ballContainer: {
-    height: 300,
+    height: 150,
   },
   row: {
     flexDirection: "row",
