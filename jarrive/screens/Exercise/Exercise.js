@@ -31,9 +31,10 @@ import React, {
 } from "react";
 import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
+import tresBien from "../../assets/tres_bien.png";
 
 const Exercise = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState("exercicies");
+  const [activeTab, setActiveTab] = useState("point explicatif");
 
   return (
     <>
@@ -193,16 +194,13 @@ const Exercise = ({ navigation }) => {
           </ImageBackground>
         </View>
       </View>
-      <SafeAreaView
-        style={
-          activeTab === "exercicies"
-            ? { backgroundColor: "#141B23", flex: 1 }
-            : {}
-        }
-      >
-        {activeTab === "point explicatif" && <PointExplicatifTab />}
-        {activeTab === "exercicies" && <DraggableQnA />}
-      </SafeAreaView>
+      {activeTab === "point explicatif" && (
+        <ScrollView>
+          <PointExplicatifTab />
+        </ScrollView>
+      )}
+
+      {activeTab === "exercicies" && <ExerciciesTab />}
     </>
   );
 };
@@ -210,84 +208,82 @@ const Exercise = ({ navigation }) => {
 const PointExplicatifTab = () => {
   return (
     <ScrollView>
-      <View>
-        <CardWithTitle
-          title={"Conjugaison"}
-          content={
-            <>
-              <Text style={{ fontSize: 16, color: "#787878" }}>
-                O verbo{" "}
-                <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-                  ÊTRE:{"\n"}
-                </Text>
-                é o verbo{" "}
-                <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-                  SER e ESTAR
-                </Text>{" "}
-                em português.{"\n"}A sua conjugação é:
+      <CardWithTitle
+        title={"Conjugaison"}
+        content={
+          <>
+            <Text style={{ fontSize: 16, color: "#787878" }}>
+              O verbo{" "}
+              <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+                ÊTRE:{"\n"}
               </Text>
-              <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <VolumeButton
-                    onPressVolumeButton={() => {
-                      /* */
-                    }}
-                    color={"#787878"}
-                  />
-                </View>
-                <View>
-                  <ConjugatedVerb pronoun={"Je"} conjugation={"suis"} />
-                  <ConjugatedVerb pronoun={"Tu"} conjugation={"es"} />
-                  <ConjugatedVerb pronoun={"Il"} conjugation={"est"} />
-                  <ConjugatedVerb pronoun={"Elle"} conjugation={"est"} />
-                  <ConjugatedVerb pronoun={"Nous"} conjugation={"sommes"} />
-                  <ConjugatedVerb pronoun={"Vous"} conjugation={"êtes"} />
-                  <ConjugatedVerb pronoun={"Ils"} conjugation={"sont"} />
-                  <ConjugatedVerb pronoun={"Elles"} conjugation={"sont"} />
-                </View>
-              </View>
-            </>
-          }
-          onPressVolumeButton={() => {
-            /** */
-          }}
-        />
-        <CardWithTitle
-          title={"Exemples"}
-          onPressVolumeButton={() => {
-            /** */
-          }}
-          content={
-            <View style={{ display: "flex", flexDirection: "row", gap: 20 }}>
-              <VolumeButton
-                onPressVolumeButton={() => {
-                  /* */
+              é o verbo{" "}
+              <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+                SER e ESTAR
+              </Text>{" "}
+              em português.{"\n"}A sua conjugação é:
+            </Text>
+            <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
                 }}
-                color={"#787878"}
-              />
-              <Text style={{ fontSize: 16, color: "#787878" }}>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Je suis</Text> un chat.
-                  {"\n"}
-                </Text>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Tu es</Text> un human.
-                  {"\n"}
-                </Text>
-                <Text>
-                  <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
-                </Text>
-              </Text>
+              >
+                <VolumeButton
+                  onPressVolumeButton={() => {
+                    /* */
+                  }}
+                  color={"#787878"}
+                />
+              </View>
+              <View>
+                <ConjugatedVerb pronoun={"Je"} conjugation={"suis"} />
+                <ConjugatedVerb pronoun={"Tu"} conjugation={"es"} />
+                <ConjugatedVerb pronoun={"Il"} conjugation={"est"} />
+                <ConjugatedVerb pronoun={"Elle"} conjugation={"est"} />
+                <ConjugatedVerb pronoun={"Nous"} conjugation={"sommes"} />
+                <ConjugatedVerb pronoun={"Vous"} conjugation={"êtes"} />
+                <ConjugatedVerb pronoun={"Ils"} conjugation={"sont"} />
+                <ConjugatedVerb pronoun={"Elles"} conjugation={"sont"} />
+              </View>
             </View>
-          }
-        />
-      </View>
+          </>
+        }
+        onPressVolumeButton={() => {
+          /** */
+        }}
+      />
+      <CardWithTitle
+        title={"Exemples"}
+        onPressVolumeButton={() => {
+          /** */
+        }}
+        content={
+          <View style={{ display: "flex", flexDirection: "row", gap: 20 }}>
+            <VolumeButton
+              onPressVolumeButton={() => {
+                /* */
+              }}
+              color={"#787878"}
+            />
+            <Text style={{ fontSize: 16, color: "#787878" }}>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Je suis</Text> un chat.
+                {"\n"}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Tu es</Text> un human.
+                {"\n"}
+              </Text>
+              <Text>
+                <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
+              </Text>
+            </Text>
+          </View>
+        }
+      />
     </ScrollView>
   );
 };
@@ -381,40 +377,6 @@ const CardWithTitle = ({ title, content }) => {
   );
 };
 
-const ExerciciesTab = () => {
-  return (
-    <View
-      style={{ backgroundColor: "#141B23", height: "100%", paddingTop: 20 }}
-    >
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-      <Text>onwafiowhaofnaowuifnwioafniowanfowanfwefiawfb</Text>
-    </View>
-  );
-};
-
 const { width, height } = Dimensions.get("window");
 
 const questions = [
@@ -487,10 +449,7 @@ const Draggable = ({
     if (!positionRef.current) return false;
     const { x, y, width, height } = positionRef.current;
 
-    return (
-      gesture.moveY > y &&
-      gesture.moveY < y + height + CIRCLE_RADIUS / 2
-    );
+    return gesture.moveY > y && gesture.moveY < y + height + CIRCLE_RADIUS / 2;
   };
   if (!showDraggable) return null;
 
@@ -528,13 +487,14 @@ const Draggable = ({
   );
 };
 
-const DraggableQnA = () => {
+const ExerciciesTab = () => {
   const dropZoneRefs = useRef(questions.map(() => createRef()));
   const [containerPositions, setContainerPositions] = useState([]);
   const [questionIdsAnsweredCorrectly, setQuestionIdsAnsweredCorrectly] =
     useState([]);
   const [showWrongMessage, setShowWrongMessage] = useState(false);
   const [showCorrectMessage, setShowCorrectMessage] = useState(false);
+  const [showEndScreen, setShowEndScreen] = useState(false);
 
   const totalQuestions = questions.length;
   const correctAnswers = questionIdsAnsweredCorrectly.length;
@@ -568,18 +528,92 @@ const DraggableQnA = () => {
     setShowCorrectMessage(true);
     setTimeout(() => {
       setShowCorrectMessage(false);
-    }, 1000);
+    }, 1500);
   };
 
   const onWrongAnswer = () => {
     setShowWrongMessage(true);
     setTimeout(() => {
       setShowWrongMessage(false);
-    }, 1000);
+    }, 1500);
   };
 
+  const isFinished =
+    questionIdsAnsweredCorrectly.length === questions.length &&
+    questionIdsAnsweredCorrectly.length > 0;
+
+  useEffect(() => {
+    if (questionIdsAnsweredCorrectly.length > 0) {
+      setTimeout(() => {
+        setShowEndScreen(true);
+      }, 1000);
+    }
+  }, [isFinished]);
+
+  if (showEndScreen) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "#141B23",
+          zIndex: 1000,
+          position: "absolute",
+          top: 0,
+          flex: 1,
+          width: "100%",
+          height: "100%",
+          paddingTop: "40%",
+          paddingBottom: 10,
+        }}
+      >
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+          }}
+        >
+          <Image source={tresBien} style={{ width: 250, height: 320 }}></Image>
+          <Text style={{ fontSize: 30, fontWeight: "bold", color: "#FFFFFF" }}>
+            On écoute les phrases!
+          </Text>
+        </View>
+        <Pressable
+          style={{
+            backgroundColor: "#23C86F",
+            paddingVertical: 5,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            elevation: 4,
+            borderRadius: 20,
+            marginTop: 20,
+            marginHorizontal: 25,
+            width: "85%",
+          }}
+          onPress={() => {
+            setShowEndScreen(false);
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFFFFF",
+              fontWeight: "bold",
+              fontSize: 20,
+            }}
+          >
+            CONTINUAR
+          </Text>
+        </Pressable>
+      </View>
+    );
+  }
+
   return (
-    <>
+    <SafeAreaView style={{ backgroundColor: "#141B23", flex: 1 }}>
       <ScrollView>
         <View
           style={{
@@ -618,6 +652,7 @@ const DraggableQnA = () => {
                     flexDirection: "row",
                     gap: 8,
                   }}
+                  key={question.id}
                 >
                   <Text style={{ color: "#FFFFFF", fontSize: 20 }}>
                     {question.text1}
@@ -660,19 +695,21 @@ const DraggableQnA = () => {
               );
             })}
           </View>
-          <View style={{ flexGrow: 1, marginBottom: 20 }}>
-            <View style={styles.row}>
-              {answers.map((answer, index) => (
-                <Draggable
-                  text={answer.text}
-                  containerPosition={containerPositions[answer.id]}
-                  key={answer.id}
-                  onCorrectAnswer={() => onCorrectAnswer(answer.id)}
-                  onWrongAnswer={onWrongAnswer}
-                />
-              ))}
+          {!isFinished && (
+            <View style={{ flexGrow: 1, marginBottom: 20 }}>
+              <View style={styles.row}>
+                {answers.map((answer, index) => (
+                  <Draggable
+                    text={answer.text}
+                    containerPosition={containerPositions[answer.id]}
+                    key={answer.id}
+                    onCorrectAnswer={() => onCorrectAnswer(answer.id)}
+                    onWrongAnswer={onWrongAnswer}
+                  />
+                ))}
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </ScrollView>
       {showCorrectMessage && (
@@ -713,7 +750,7 @@ const DraggableQnA = () => {
           </Text>
         </View>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -729,6 +766,7 @@ const ProgressBar = ({ totalQuestions, correctAnswers }) => {
         borderRadius: 10,
         overflow: "hidden",
         marginVertical: 10,
+        flex: 1,
       }}
     >
       <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
