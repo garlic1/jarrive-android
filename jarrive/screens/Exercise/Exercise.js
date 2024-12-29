@@ -232,9 +232,7 @@ const PointExplicatifTab = () => {
                 }}
               >
                 <VolumeButton
-                  onPressVolumeButton={() => {
-                    /* */
-                  }}
+                  soundFile={require("../../assets/audios/je_suis_tu_es.mp3")}
                   color={"#787878"}
                 />
               </View>
@@ -251,21 +249,13 @@ const PointExplicatifTab = () => {
             </View>
           </>
         }
-        onPressVolumeButton={() => {
-          /** */
-        }}
       />
       <CardWithTitle
         title={"Exemples"}
-        onPressVolumeButton={() => {
-          /** */
-        }}
         content={
           <View style={{ display: "flex", flexDirection: "row", gap: 20 }}>
             <VolumeButton
-              onPressVolumeButton={() => {
-                /* */
-              }}
+              soundFile={require("../../assets/audios/je_suis_un_chat.mp3")}
               color={"#787878"}
             />
             <Text style={{ fontSize: 16, color: "#787878" }}>
@@ -394,6 +384,26 @@ const answers = [
   { id: 3, text: "sommes" },
 ];
 
+const audios = [
+  {
+    id: 0,
+    audio: require("../../assets/audios/je_suis_un_facteur.mp3"),
+  },
+  { id: 1, audio: require("../../assets/audios/tu_es_mon_copain.mp3") },
+  {
+    id: 2,
+    audio: require("../../assets/audios/elle_est_dans_un_train.mp3"),
+  },
+  {
+    id: 3,
+    audio: require("../../assets/audios/nous_sommes_en_voyage.mp3"),
+  },
+  {
+    id: 4,
+    audio: require("../../assets/audios/on_ecoute_les_phrases.mp3"),
+  },
+];
+
 const CIRCLE_RADIUS = 30;
 
 const Draggable = ({
@@ -492,9 +502,13 @@ const ExerciciesTab = () => {
   const [containerPositions, setContainerPositions] = useState([]);
   const [questionIdsAnsweredCorrectly, setQuestionIdsAnsweredCorrectly] =
     useState([]);
+  const [audioIdsListened, setAudioIdsListened] = useState([]);
+  const isListenedEcoute = audioIdsListened.find((obj) => obj?.id === 4);
+
   const [showWrongMessage, setShowWrongMessage] = useState(false);
   const [showCorrectMessage, setShowCorrectMessage] = useState(false);
   const [showEndScreen, setShowEndScreen] = useState(false);
+  const [showListenPhrases, setShowListenPhrases] = useState(false);
 
   const totalQuestions = questions.length;
   const correctAnswers = questionIdsAnsweredCorrectly.length;
@@ -504,14 +518,6 @@ const ExerciciesTab = () => {
       if (dropZoneRefs.current[index]) {
         dropZoneRefs.current[index].current.measureInWindow(
           (x, y, width, height) => {
-            console.log(
-              "x, y, width, height, index",
-              x,
-              y,
-              width,
-              height,
-              index
-            );
             setContainerPositions((containerPositions) => [
               ...containerPositions,
               { x, y, width, height },
@@ -595,6 +601,7 @@ const ExerciciesTab = () => {
             width: "85%",
           }}
           onPress={() => {
+            setShowListenPhrases(true);
             setShowEndScreen(false);
           }}
         >
@@ -609,6 +616,118 @@ const ExerciciesTab = () => {
           </Text>
         </Pressable>
       </View>
+    );
+  }
+
+  if (true) {
+    return (
+      <SafeAreaView style={{ backgroundColor: "#141B23", flex: 1 }}>
+        <ScrollView>
+          <View
+            style={{
+              display: "flex",
+              width: "100%",
+              marginTop: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 32,
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                width: "100%",
+                marginTop: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 32,
+              }}
+            >
+              <ProgressBar
+                totalQuestions={audios.length}
+                correctAnswers={audioIdsListened.length}
+              />
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  width: "100%",
+                  gap: 8,
+                  marginLeft: 30,
+                }}
+              >
+                <VolumeButton
+                  backgroundColor={isListenedEcoute ? "#23C86F" : "#FFFFFF"}
+                  color={isListenedEcoute ? "#141B23" : "#4354EF"}
+                  size={40}
+                  soundFile={audios.find((audio) => audio.id === 4).audio}
+                  onEnd={() =>
+                    setAudioIdsListened((old) => [...old, { id: 4 }])
+                  }
+                />
+                <Text
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: 20,
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  On écoute les phrases!
+                </Text>
+              </View>
+              <View style={{ alignItems: "flex-start", gap: 8 }}>
+                {questions.map((question, index) => {
+                  const { audio, id } = audios.find(
+                    (obj) => obj.id === question.id
+                  );
+                  const isListened = audioIdsListened.find(
+                    (obj) => obj.id === id
+                  );
+                  return (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 8,
+                      }}
+                      key={question.id}
+                    >
+                      <VolumeButton
+                        soundFile={audio}
+                        backgroundColor={isListened ? "#23C86F" : "#FFFFFF"}
+                        color={isListened ? "#141B23" : "#4354EF"}
+                        onEnd={() =>
+                          setAudioIdsListened((old) => [...old, { id: id }])
+                        }
+                      />
+                      <Text style={{ color: "#FFFFFF", fontSize: 20 }}>
+                        {question.text1} <Text>{question.correctAnswer} </Text>
+                        <Text>{question.text2}</Text>
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+              {!isFinished && (
+                <View style={{ flexGrow: 1, marginBottom: 20 }}>
+                  <View style={styles.row}>
+                    {answers.map((answer, index) => (
+                      <Draggable
+                        text={answer.text}
+                        containerPosition={containerPositions[answer.id]}
+                        key={answer.id}
+                        onCorrectAnswer={() => onCorrectAnswer(answer.id)}
+                        onWrongAnswer={onWrongAnswer}
+                      />
+                    ))}
+                  </View>
+                </View>
+              )}
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 

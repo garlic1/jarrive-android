@@ -255,7 +255,7 @@ function MessageAudio() {
 
   const onPlay = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/meow.m4a")
+      require("../../assets/audios/meow.m4a")
     );
     setSound(sound);
     setIsPlaying(true);

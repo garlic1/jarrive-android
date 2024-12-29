@@ -283,11 +283,7 @@ const MessageTab = () => {
           gap: 8,
         }}
       >
-        <VolumeButton
-          onPressVolumeButton={() => {
-            /* */
-          }}
-        />
+        <VolumeButton soundFile={require("../../assets/audios/charlotte.mp3")} />
         <View>
           <Text
             style={{
