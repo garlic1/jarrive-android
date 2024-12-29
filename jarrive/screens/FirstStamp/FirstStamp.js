@@ -87,6 +87,7 @@ const FirstStamp = ({ navigation }) => {
             borderRadius: 20,
             marginBottom: 10
           }}
+          onPress={() => navigation.navigate("Log in")}
         >
           <Text
             style={{

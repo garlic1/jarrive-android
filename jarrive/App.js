@@ -10,6 +10,7 @@ import StampScreen from "./screens/Stamp/StampScreen";
 import { CopilotProvider } from "react-native-copilot";
 import Exercise from "./screens/Exercise/Exercise";
 import FirstStamp from "./screens/FirstStamp/FirstStamp";
+import StartScreen from "./screens/Start/Start";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
         <NavigationContainer theme={theme}>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Log in" component={LogInScreen} />
+            <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Image" component={DownloadImage} />
             <Stack.Screen name="Stamp" component={StampScreen} />

@@ -34,7 +34,7 @@ const LogInScreen = ({ navigation }) => {
     /** */
   };
   const onPressLogin = () => {
-    navigation.navigate("Exercise");
+    navigation.navigate("Start");
   };
   const onPressRegister = () => {
     /** */
