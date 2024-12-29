@@ -9,6 +9,7 @@ import DownloadImage from "./screens/DownloadImage/DownloadImage";
 import StampScreen from "./screens/Stamp/StampScreen";
 import { CopilotProvider } from "react-native-copilot";
 import Exercise from "./screens/Exercise/Exercise";
+import FirstStamp from "./screens/FirstStamp/FirstStamp";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,14 +17,14 @@ export default function App() {
   const { theme } = useTheme();
 
   const tutorialStyle = {
-    color: "white"
-  }
+    color: "white",
+  };
 
   return (
     <MessagesProvider>
       <CopilotProvider
         labels={{
-          finish: "Ok"
+          finish: "Ok",
         }}
         tooltipStyle={tutorialStyle}
       >
@@ -34,6 +35,7 @@ export default function App() {
             <Stack.Screen name="Image" component={DownloadImage} />
             <Stack.Screen name="Stamp" component={StampScreen} />
             <Stack.Screen name="Exercise" component={Exercise} />
+            <Stack.Screen name="FirstStamp" component={FirstStamp} />
           </Stack.Navigator>
         </NavigationContainer>
       </CopilotProvider>

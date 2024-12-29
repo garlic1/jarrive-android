@@ -10,16 +10,8 @@ import {
   StatusBar,
   Animated,
   ScrollView,
-  UIManager,
-  findNodeHandle,
   SafeAreaView,
 } from "react-native";
-import backgroundChat from "../../assets/background_chat.png";
-import cartePostaleFront from "../../assets/carte_postale/carte_postale_front.png";
-import cartePostaleBack from "../../assets/carte_postale/carte_postale_back.png";
-import stampDisabled from "../../assets/stamp_disabled.png";
-import stampNormal from "../../assets/stamp.png";
-import stampAchieved from "../../assets/stamp_achieved.png";
 import { Ionicons } from "@expo/vector-icons";
 import React, {
   createRef,
@@ -35,6 +27,7 @@ import tresBien from "../../assets/tres_bien.png";
 
 const Exercise = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("point explicatif");
+  const { navigate } = navigation;
 
   return (
     <>
@@ -200,7 +193,7 @@ const Exercise = ({ navigation }) => {
         </ScrollView>
       )}
 
-      {activeTab === "exercicies" && <ExerciciesTab />}
+      {activeTab === "exercicies" && <ExerciciesTab navigate={navigate} />}
     </>
   );
 };
@@ -412,7 +405,6 @@ const Draggable = ({
   onCorrectAnswer,
   onWrongAnswer,
 }) => {
-  const positionInside = containerPosition;
   const pan = useRef(new Animated.ValueXY()).current;
   const [showDraggable, setShowDraggable] = useState(true);
   const [opacity] = useState(new Animated.Value(1));
@@ -497,13 +489,16 @@ const Draggable = ({
   );
 };
 
-const ExerciciesTab = () => {
+const ExerciciesTab = ({ navigate }) => {
   const dropZoneRefs = useRef(questions.map(() => createRef()));
   const [containerPositions, setContainerPositions] = useState([]);
   const [questionIdsAnsweredCorrectly, setQuestionIdsAnsweredCorrectly] =
     useState([]);
   const [audioIdsListened, setAudioIdsListened] = useState([]);
   const isListenedEcoute = audioIdsListened.find((obj) => obj?.id === 4);
+
+  const isFinishedListening =
+    audioIdsListened.length >= audios.length && audioIdsListened.length > 0;
 
   const [showWrongMessage, setShowWrongMessage] = useState(false);
   const [showCorrectMessage, setShowCorrectMessage] = useState(false);
@@ -619,7 +614,7 @@ const ExerciciesTab = () => {
     );
   }
 
-  if (true) {
+  if (showListenPhrases) {
     return (
       <SafeAreaView style={{ backgroundColor: "#141B23", flex: 1 }}>
         <ScrollView>
@@ -651,7 +646,7 @@ const ExerciciesTab = () => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  alignItems: "flex-start",
+                  alignItems: "center",
                   width: "100%",
                   gap: 8,
                   marginLeft: 30,
@@ -725,6 +720,40 @@ const ExerciciesTab = () => {
                 </View>
               )}
             </View>
+          </View>
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <Pressable
+              style={{
+                backgroundColor: isFinishedListening ? "#23C86F" : "#404040",
+                paddingVertical: 5,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                elevation: 4,
+                borderRadius: 20,
+                marginTop: 20,
+                marginHorizontal: 25,
+                width: "85%",
+              }}
+              onPress={() => {
+                navigate("FirstStamp");
+              }}
+              disabled={!isFinishedListening}
+            >
+              <Text
+                style={{
+                  color: isFinishedListening ? "#FFFFFF" : "#141B23",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                }}
+              >
+                CONTINUAR
+              </Text>
+            </Pressable>
           </View>
         </ScrollView>
       </SafeAreaView>
