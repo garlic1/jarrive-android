@@ -56,116 +56,53 @@ const StampScreen = ({ navigation }) => {
 
   return (
     <View>
-      <View
-        style={{
-          backgroundColor: "#2C327E",
-          height: 300,
-          borderBottomLeftRadius: 30,
-          borderBottomRightRadius: 30,
-          elevation: 10,
-        }}
-      >
+      <View style={styles.header}>
         <ImageBackground
           source={backgroundChat}
-          style={{
-            height: "100%",
-            width: "100%",
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 40,
-          }}
+          style={styles.imageBackground}
           resizeMode="cover"
         >
-          <View
-            style={{
-              marginLeft: 30,
-              marginRight: "auto",
-              marginTop: StatusBar.currentHeight + 50 || 50,
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                color: "white",
-                fontSize: 24,
-                marginBottom: 20,
-              }}
-            >
-              Charlotte
-            </Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>Charlotte</Text>
             <Animated.View
-              style={[
-                {
-                  position: "absolute",
-                  transform: [{ rotateY: frontInterpolate }],
-                  backfaceVisibility: "hidden",
-                  opacity: frontOpacity,
-                  top: 50,
-                },
-              ]}
+              style={{
+                position: "absolute",
+                transform: [{ rotateY: frontInterpolate }],
+                backfaceVisibility: "hidden",
+                opacity: frontOpacity,
+                top: 50,
+              }}
             >
               <Image
                 source={cartePostaleFront}
-                style={{
-                  height: 232,
-                  width: 334,
-                }}
+                style={styles.cartePostaleImage}
                 resizeMode="contain"
               />
             </Animated.View>
-
             <Animated.View
-              style={[
-                {
-                  position: "absolute",
-                  top: 50,
-                  transform: [{ rotateY: backInterpolate }],
-                  opacity: backOpacity,
-                  backfaceVisibility: "hidden",
-                },
-              ]}
+              style={{
+                position: "absolute",
+                top: 50,
+                transform: [{ rotateY: backInterpolate }],
+                opacity: backOpacity,
+                backfaceVisibility: "hidden",
+              }}
             >
               <Image
                 source={cartePostaleBack}
-                style={{
-                  height: 232,
-                  width: 334,
-                }}
+                style={styles.cartePostaleImage}
                 resizeMode="contain"
               />
             </Animated.View>
-            <View style={{ height: 232, width: 334 }} />
-            <Pressable
-              onPress={flipCard}
-              style={{
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 16,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  borderRadius: 20,
-                  height: 30,
-                  elevation: 2,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+            <View style={styles.cartePostaleContainer} />
+            <Pressable onPress={flipCard} style={styles.flipCardButton}>
+              <View style={styles.flipCardContainer}>
                 <Ionicons
                   size={20}
                   name="chevron-back-outline"
                   color="#2C327E"
                 />
-                <Text
-                  style={{
-                    color: "#2C327E",
-                    fontSize: 16,
-                  }}
-                >
-                  virar cartão
-                </Text>
+                <Text style={styles.flipCardText}>virar cartão</Text>
                 <Ionicons
                   size={20}
                   name="chevron-forward-outline"
@@ -175,56 +112,20 @@ const StampScreen = ({ navigation }) => {
             </Pressable>
           </View>
           <View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 8,
-                margin: 20,
-              }}
-            >
+            <View style={styles.tabsContainer}>
               <Pressable
-                style={{
-                  color: activeTab === "selos" ? "#FFFFFF" : "#D9D9D9",
-                  backgroundColor:
-                    activeTab === "selos" ? "#2C327E" : "#F5F5F5",
-                  borderRadius: 20,
-                  elevation: 4,
-                  paddingVertical: 5,
-                  paddingHorizontal: 60,
-                }}
+                style={styles.tabButton(activeTab === "selos")}
                 onPress={() => setActiveTab("selos")}
               >
-                <Text
-                  style={{
-                    color: activeTab === "selos" ? "#FFFFFF" : "#D9D9D9",
-                    fontSize: 16,
-                    fontWeight: "bold",
-                  }}
-                >
+                <Text style={styles.tabButtonText(activeTab === "selos")}>
                   Selos
                 </Text>
               </Pressable>
               <Pressable
-                style={{
-                  color: activeTab === "mensagem" ? "#FFFFFF" : "#D9D9D9",
-                  backgroundColor:
-                    activeTab === "mensagem" ? "#2C327E" : "#F5F5F5",
-                  borderRadius: 20,
-                  elevation: 4,
-                  paddingVertical: 5,
-                  paddingHorizontal: 60,
-                }}
+                style={styles.tabButton(activeTab === "mensagem")}
                 onPress={() => setActiveTab("mensagem")}
               >
-                <Text
-                  style={{
-                    color: activeTab === "mensagem" ? "#FFFFFF" : "#D9D9D9",
-                    fontSize: 16,
-                    fontWeight: "bold",
-                  }}
-                >
+                <Text style={styles.tabButtonText(activeTab === "mensagem")}>
                   Mensagem
                 </Text>
               </Pressable>
@@ -232,37 +133,111 @@ const StampScreen = ({ navigation }) => {
           </View>
         </ImageBackground>
       </View>
-      <View style={{ marginTop: 150 }}>
+      <View style={styles.container}>
         {activeTab === "mensagem" && <MessageTab />}
         {activeTab === "selos" && <StampsTab navigation={navigation} />}
       </View>
       <Pressable
-        style={{
-          backgroundColor: "#F5F5F5",
-          paddingVertical: 5,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          elevation: 4,
-          borderRadius: 20,
-          marginTop: 20,
-          marginHorizontal: 25,
-        }}
+        style={styles.footerButton}
         onPress={() => navigation.navigate("Chat")}
         disabled
       >
-        <Text
-          style={{
-            color: "#D9D9D9",
-            fontWeight: "bold",
-            fontSize: 20,
-          }}
-        >
-          VOLTAR PARA O CHAT
-        </Text>
+        <Text style={styles.footerButtonText}>VOLTAR PARA O CHAT</Text>
       </Pressable>
     </View>
   );
+};
+
+const styles = {
+  container: {
+    marginTop: 150,
+  },
+  header: {
+    backgroundColor: "#2C327E",
+    height: 300,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    elevation: 10,
+  },
+  imageBackground: {
+    height: "100%",
+    width: "100%",
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+  },
+  titleContainer: {
+    marginLeft: 30,
+    marginRight: "auto",
+    marginTop: StatusBar.currentHeight + 50 || 50,
+  },
+  titleText: {
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  cartePostaleImage: {
+    height: 232,
+    width: 334,
+  },
+  cartePostaleContainer: {
+    height: 232,
+    width: 334,
+  },
+  flipCardButton: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 16,
+  },
+  flipCardContainer: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: 20,
+    height: 30,
+    elevation: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flipCardText: {
+    color: "#2C327E",
+    fontSize: 16,
+  },
+  tabsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
+    margin: 20,
+  },
+  tabButton: (isActive) => ({
+    color: isActive ? "#FFFFFF" : "#D9D9D9",
+    backgroundColor: isActive ? "#2C327E" : "#F5F5F5",
+    borderRadius: 20,
+    elevation: 4,
+    paddingVertical: 5,
+    paddingHorizontal: 60,
+  }),
+  tabButtonText: (isActive) => ({
+    color: isActive ? "#FFFFFF" : "#D9D9D9",
+    fontSize: 16,
+    fontWeight: "bold",
+  }),
+  footerButton: {
+    backgroundColor: "#F5F5F5",
+    paddingVertical: 5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 4,
+    borderRadius: 20,
+    marginTop: 20,
+    marginHorizontal: 25,
+  },
+  footerButtonText: {
+    color: "#D9D9D9",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
 };
 
 const MessageTab = () => {
@@ -283,7 +258,9 @@ const MessageTab = () => {
           gap: 8,
         }}
       >
-        <VolumeButton soundFile={require("../../assets/audios/charlotte.mp3")} />
+        <VolumeButton
+          soundFile={require("../../assets/audios/charlotte.mp3")}
+        />
         <View>
           <Text
             style={{

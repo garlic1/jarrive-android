@@ -1,29 +1,17 @@
 import {
-  StyleSheet,
-  PanResponder,
-  Dimensions,
-  Image,
   ImageBackground,
   Pressable,
   Text,
   View,
   StatusBar,
-  Animated,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, {
-  createRef,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useState } from "react";
 import exercisesHeader from "../../assets/exercices_header.png";
 import VolumeButton from "../../components/VolumeButton";
-import tresBien from "../../assets/tres_bien.png";
+import { PointExplicatifTab } from "./PointExplicatifTab";
+import { ExercicesTab } from "./ExercicesTab";
 
 const Exercise = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState("point explicatif");
@@ -32,39 +20,15 @@ const Exercise = ({ navigation }) => {
   return (
     <>
       <View>
-        <View
-          style={{
-            height: 300,
-            marginBottom: -20,
-          }}
-        >
+        <View style={styles.container}>
           <ImageBackground
             source={exercisesHeader}
-            style={{
-              height: "100%",
-              width: "100%",
-              zIndex: 10,
-            }}
+            style={styles.backgroundImage}
             resizeMode="cover"
           >
-            <View
-              style={{
-                marginLeft: 10,
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-around",
-              }}
-            >
+            <View style={styles.headerContainer}>
               <View>
-                <View
-                  style={{
-                    marginTop: StatusBar.currentHeight + 25 || 25,
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 2,
-                  }}
-                >
+                <View style={styles.backButtonContainer}>
                   <Pressable>
                     <Ionicons
                       size={20}
@@ -72,114 +36,39 @@ const Exercise = ({ navigation }) => {
                       color="#4354EF"
                     />
                   </Pressable>
-                  <Text
-                    style={{
-                      color: "#4354EF",
-                      fontSize: 16,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Carte Postale
-                  </Text>
-                  <View></View>
+                  <Text style={styles.backButtonText}>Carte Postale</Text>
                 </View>
-                <View>
-                  <Text
-                    style={{
-                      color: "#4354EF",
-                      fontWeight: "bold",
-                      fontSize: 16,
-                    }}
-                  >
-                    Verbes
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#4354EF",
-                      fontWeight: "bold",
-                      marginBottom: 30,
-                      fontSize: 16,
-                    }}
-                  >
-                    #001
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#4354EF",
-                      fontWeight: "900",
-                      fontSize: 24,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Être
-                  </Text>
+                <View style={styles.verbContainer}>
+                  <Text style={styles.verbText}>Verbes</Text>
+                  <Text style={styles.verbNumber}>#001</Text>
+                  <Text style={styles.verbTitle}>Être</Text>
                 </View>
-
                 <VolumeButton
-                  color={"#4354EF"}
+                  color="#4354EF"
                   onPressVolumeButton={() => {
                     /* */
                   }}
                 />
               </View>
-              <View
-                style={{
-                  marginTop: StatusBar.height + 100 || 100,
-                }}
-              >
+              <View style={styles.volumeButtonContainer}>
                 <Pressable
-                  style={{
-                    color:
-                      activeTab === "point explicatif" ? "#FFFFFF" : "#D9D9D9",
-                    backgroundColor:
-                      activeTab === "point explicatif" ? "#4354EF" : "#F5F5F5",
-                    borderRadius: 20,
-                    elevation: 4,
-                    paddingVertical: 5,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 165,
-                    marginBottom: 10,
-                  }}
+                  style={styles.tabButton(activeTab === "point explicatif")}
                   onPress={() => setActiveTab("point explicatif")}
                 >
                   <Text
-                    style={{
-                      color:
-                        activeTab === "point explicatif"
-                          ? "#FFFFFF"
-                          : "#D9D9D9",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
+                    style={styles.tabButtonText(
+                      activeTab === "point explicatif"
+                    )}
                   >
                     Point Explicatif
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={{
-                    color: activeTab === "exercicies" ? "#FFFFFF" : "#D9D9D9",
-                    backgroundColor:
-                      activeTab === "exercicies" ? "#4354EF" : "#F5F5F5",
-                    borderRadius: 20,
-                    elevation: 4,
-                    paddingVertical: 5,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 165,
-                  }}
-                  onPress={() => setActiveTab("exercicies")}
+                  style={styles.tabButton(activeTab === "exercices")}
+                  onPress={() => setActiveTab("exercices")}
                 >
-                  <Text
-                    style={{
-                      color: activeTab === "exercicies" ? "#FFFFFF" : "#D9D9D9",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Exercicies
+                  <Text style={styles.tabButtonText(activeTab === "exercices")}>
+                    Exercices
                   </Text>
                 </Pressable>
               </View>
@@ -192,817 +81,76 @@ const Exercise = ({ navigation }) => {
           <PointExplicatifTab />
         </ScrollView>
       )}
-
-      {activeTab === "exercicies" && <ExerciciesTab navigate={navigate} />}
+      {activeTab === "exercices" && <ExercicesTab navigate={navigate} />}
     </>
   );
 };
 
-const PointExplicatifTab = () => {
-  return (
-    <ScrollView>
-      <CardWithTitle
-        title={"Conjugaison"}
-        content={
-          <>
-            <Text style={{ fontSize: 16, color: "#787878" }}>
-              O verbo{" "}
-              <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-                ÊTRE:{"\n"}
-              </Text>
-              é o verbo{" "}
-              <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
-                SER e ESTAR
-              </Text>{" "}
-              em português.{"\n"}A sua conjugação é:
-            </Text>
-            <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <VolumeButton
-                  soundFile={require("../../assets/audios/je_suis_tu_es.mp3")}
-                  color={"#787878"}
-                />
-              </View>
-              <View>
-                <ConjugatedVerb pronoun={"Je"} conjugation={"suis"} />
-                <ConjugatedVerb pronoun={"Tu"} conjugation={"es"} />
-                <ConjugatedVerb pronoun={"Il"} conjugation={"est"} />
-                <ConjugatedVerb pronoun={"Elle"} conjugation={"est"} />
-                <ConjugatedVerb pronoun={"Nous"} conjugation={"sommes"} />
-                <ConjugatedVerb pronoun={"Vous"} conjugation={"êtes"} />
-                <ConjugatedVerb pronoun={"Ils"} conjugation={"sont"} />
-                <ConjugatedVerb pronoun={"Elles"} conjugation={"sont"} />
-              </View>
-            </View>
-          </>
-        }
-      />
-      <CardWithTitle
-        title={"Exemples"}
-        content={
-          <View style={{ display: "flex", flexDirection: "row", gap: 20 }}>
-            <VolumeButton
-              soundFile={require("../../assets/audios/je_suis_un_chat.mp3")}
-              color={"#787878"}
-            />
-            <Text style={{ fontSize: 16, color: "#787878" }}>
-              <Text>
-                <Text style={{ fontWeight: "bold" }}>Je suis</Text> un chat.
-                {"\n"}
-              </Text>
-              <Text>
-                <Text style={{ fontWeight: "bold" }}>Tu es</Text> un human.
-                {"\n"}
-              </Text>
-              <Text>
-                <Text style={{ fontWeight: "bold" }}>Nous sommes</Text> amis.
-              </Text>
-            </Text>
-          </View>
-        }
-      />
-    </ScrollView>
-  );
-};
-
-const ConjugatedVerb = ({ pronoun, conjugation }) => {
-  return (
-    <View
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-      }}
-    >
-      <View
-        style={{
-          width: "37%",
-        }}
-      >
-        <Text
-          style={{
-            width: "100%",
-            fontSize: 20,
-            textAlign: "right",
-            color: "#787878",
-          }}
-        >
-          {pronoun}{" "}
-        </Text>
-      </View>
-      <View
-        style={{
-          width: "50%",
-        }}
-      >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontStyle: "italic",
-            fontSize: 20,
-            color: "#787878",
-          }}
-        >
-          {conjugation}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const CardWithTitle = ({ title, content }) => {
-  return (
-    <View>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 5,
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: 24,
-            color: "#4354EF",
-            marginLeft: 20,
-            marginTop: 20,
-          }}
-        >
-          {title}
-        </Text>
-      </View>
-      <View
-        style={{
-          backgroundColor: "#F5F5F5",
-          margin: 20,
-          marginTop: 10,
-          borderRadius: 20,
-          padding: 12,
-        }}
-      >
-        <View
-          style={{
-            margin: 12,
-          }}
-        >
-          {content}
-        </View>
-      </View>
-    </View>
-  );
-};
-
-const { width, height } = Dimensions.get("window");
-
-const questions = [
-  { id: 0, text1: "Je", text2: "un facteur. ✉️", correctAnswer: "suis" },
-  { id: 1, text1: "Tu", text2: "mon copain. ❤️", correctAnswer: "es" },
-  { id: 2, text1: "Elle", text2: "dans un train. 🚂", correctAnswer: "est" },
-  { id: 3, text1: "Nous", text2: "en voyage. ✈️", correctAnswer: "sommes" },
-];
-
-const answers = [
-  { id: 2, text: "est" },
-  { id: 0, text: "suis" },
-  { id: 4, text: "sont" },
-  { id: 1, text: "es" },
-  { id: 3, text: "sommes" },
-];
-
-const audios = [
-  {
-    id: 0,
-    audio: require("../../assets/audios/je_suis_un_facteur.mp3"),
-  },
-  { id: 1, audio: require("../../assets/audios/tu_es_mon_copain.mp3") },
-  {
-    id: 2,
-    audio: require("../../assets/audios/elle_est_dans_un_train.mp3"),
-  },
-  {
-    id: 3,
-    audio: require("../../assets/audios/nous_sommes_en_voyage.mp3"),
-  },
-  {
-    id: 4,
-    audio: require("../../assets/audios/on_ecoute_les_phrases.mp3"),
-  },
-];
-
-const CIRCLE_RADIUS = 30;
-
-const Draggable = ({
-  text,
-  containerPosition,
-  onCorrectAnswer,
-  onWrongAnswer,
-}) => {
-  const pan = useRef(new Animated.ValueXY()).current;
-  const [showDraggable, setShowDraggable] = useState(true);
-  const [opacity] = useState(new Animated.Value(1));
-  const positionRef = useRef(containerPosition);
-
-  useLayoutEffect(() => {
-    positionRef.current = containerPosition;
-  }, [containerPosition]);
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: (e, gesture) => {
-        if (isDropArea(gesture)) {
-          Animated.timing(opacity, {
-            toValue: 0,
-            duration: 0,
-            useNativeDriver: false,
-          }).start(() => {
-            setShowDraggable(false);
-            onCorrectAnswer();
-          });
-        } else {
-          onWrongAnswer();
-          Animated.spring(pan, {
-            toValue: { x: 0, y: 0 },
-            friction: 5,
-            useNativeDriver: false,
-          }).start();
-        }
-      },
-    })
-  ).current;
-
-  useLayoutEffect(() => {
-    const listener = pan.addListener((value) => value);
-    return () => pan.removeListener(listener);
-  }, [pan]);
-
-  const isDropArea = (gesture) => {
-    if (!positionRef.current) return false;
-    const { x, y, width, height } = positionRef.current;
-
-    return gesture.moveY > y && gesture.moveY < y + height + CIRCLE_RADIUS / 2;
-  };
-  if (!showDraggable) return null;
-
-  const panStyle = {
-    transform: pan.getTranslateTransform(),
-    opacity,
-  };
-
-  return (
-    <Animated.View
-      {...panResponder.panHandlers}
-      style={[
-        panStyle,
-        {
-          backgroundColor: "#F5F5F5",
-          height: CIRCLE_RADIUS,
-          minWidth: CIRCLE_RADIUS * 2,
-          borderRadius: CIRCLE_RADIUS,
-          display: "flex",
-          alignItems: "center",
-        },
-      ]}
-    >
-      <Text
-        style={{
-          color: "#4354EF",
-          fontSize: 20,
-          fontWeight: 600,
-          paddingHorizontal: 10,
-        }}
-      >
-        {text}
-      </Text>
-    </Animated.View>
-  );
-};
-
-const ExerciciesTab = ({ navigate }) => {
-  const dropZoneRefs = useRef(questions.map(() => createRef()));
-  const [containerPositions, setContainerPositions] = useState([]);
-  const [questionIdsAnsweredCorrectly, setQuestionIdsAnsweredCorrectly] =
-    useState([]);
-  const [audioIdsListened, setAudioIdsListened] = useState([]);
-  const isListenedEcoute = audioIdsListened.find((obj) => obj?.id === 4);
-
-  const isFinishedListening =
-    audioIdsListened.length >= audios.length && audioIdsListened.length > 0;
-
-  const [showWrongMessage, setShowWrongMessage] = useState(false);
-  const [showCorrectMessage, setShowCorrectMessage] = useState(false);
-  const [showEndScreen, setShowEndScreen] = useState(false);
-  const [showListenPhrases, setShowListenPhrases] = useState(false);
-
-  const totalQuestions = questions.length;
-  const correctAnswers = questionIdsAnsweredCorrectly.length;
-
-  const handleDropAreaLayout = useCallback(
-    (event, index) => {
-      if (dropZoneRefs.current[index]) {
-        dropZoneRefs.current[index].current.measureInWindow(
-          (x, y, width, height) => {
-            setContainerPositions((containerPositions) => [
-              ...containerPositions,
-              { x, y, width, height },
-            ]);
-          }
-        );
-      }
-    },
-    [dropZoneRefs]
-  );
-
-  const onCorrectAnswer = (id) => {
-    setQuestionIdsAnsweredCorrectly((old) => [...old, { id: id }]);
-    setShowCorrectMessage(true);
-    setTimeout(() => {
-      setShowCorrectMessage(false);
-    }, 1500);
-  };
-
-  const onWrongAnswer = () => {
-    setShowWrongMessage(true);
-    setTimeout(() => {
-      setShowWrongMessage(false);
-    }, 1500);
-  };
-
-  const isFinished =
-    questionIdsAnsweredCorrectly.length === questions.length &&
-    questionIdsAnsweredCorrectly.length > 0;
-
-  useEffect(() => {
-    if (questionIdsAnsweredCorrectly.length > 0) {
-      setTimeout(() => {
-        setShowEndScreen(true);
-      }, 1000);
-    }
-  }, [isFinished]);
-
-  if (showEndScreen) {
-    return (
-      <View
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "#141B23",
-          zIndex: 1000,
-          position: "absolute",
-          top: 0,
-          flex: 1,
-          width: "100%",
-          height: "100%",
-          paddingTop: "40%",
-          paddingBottom: 10,
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 16,
-          }}
-        >
-          <Image source={tresBien} style={{ width: 250, height: 320 }}></Image>
-          <Text style={{ fontSize: 30, fontWeight: "bold", color: "#FFFFFF" }}>
-            On écoute les phrases!
-          </Text>
-        </View>
-        <Pressable
-          style={{
-            backgroundColor: "#23C86F",
-            paddingVertical: 5,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            elevation: 4,
-            borderRadius: 20,
-            marginTop: 20,
-            marginHorizontal: 25,
-            width: "85%",
-          }}
-          onPress={() => {
-            setShowListenPhrases(true);
-            setShowEndScreen(false);
-          }}
-        >
-          <Text
-            style={{
-              color: "#FFFFFF",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-          >
-            CONTINUAR
-          </Text>
-        </Pressable>
-      </View>
-    );
-  }
-
-  if (showListenPhrases) {
-    return (
-      <SafeAreaView style={{ backgroundColor: "#141B23", flex: 1 }}>
-        <ScrollView>
-          <View
-            style={{
-              display: "flex",
-              width: "100%",
-              marginTop: 20,
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 32,
-            }}
-          >
-            <View
-              style={{
-                display: "flex",
-                width: "100%",
-                marginTop: 20,
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 32,
-              }}
-            >
-              <ProgressBar
-                totalQuestions={audios.length}
-                correctAnswers={audioIdsListened.length}
-              />
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  width: "100%",
-                  gap: 8,
-                  marginLeft: 30,
-                }}
-              >
-                <VolumeButton
-                  backgroundColor={isListenedEcoute ? "#23C86F" : "#FFFFFF"}
-                  color={isListenedEcoute ? "#141B23" : "#4354EF"}
-                  size={40}
-                  soundFile={audios.find((audio) => audio.id === 4).audio}
-                  onEnd={() =>
-                    setAudioIdsListened((old) => [...old, { id: 4 }])
-                  }
-                />
-                <Text
-                  style={{
-                    color: "#FFFFFF",
-                    fontSize: 20,
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  On écoute les phrases!
-                </Text>
-              </View>
-              <View style={{ alignItems: "flex-start", gap: 8 }}>
-                {questions.map((question, index) => {
-                  const { audio, id } = audios.find(
-                    (obj) => obj.id === question.id
-                  );
-                  const isListened = audioIdsListened.find(
-                    (obj) => obj.id === id
-                  );
-                  return (
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: 8,
-                      }}
-                      key={question.id}
-                    >
-                      <VolumeButton
-                        soundFile={audio}
-                        backgroundColor={isListened ? "#23C86F" : "#FFFFFF"}
-                        color={isListened ? "#141B23" : "#4354EF"}
-                        onEnd={() =>
-                          setAudioIdsListened((old) => [...old, { id: id }])
-                        }
-                      />
-                      <Text style={{ color: "#FFFFFF", fontSize: 20 }}>
-                        {question.text1} <Text>{question.correctAnswer} </Text>
-                        <Text>{question.text2}</Text>
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View>
-              {!isFinished && (
-                <View style={{ flexGrow: 1, marginBottom: 20 }}>
-                  <View style={styles.row}>
-                    {answers.map((answer, index) => (
-                      <Draggable
-                        text={answer.text}
-                        containerPosition={containerPositions[answer.id]}
-                        key={answer.id}
-                        onCorrectAnswer={() => onCorrectAnswer(answer.id)}
-                        onWrongAnswer={onWrongAnswer}
-                      />
-                    ))}
-                  </View>
-                </View>
-              )}
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <Pressable
-              style={{
-                backgroundColor: isFinishedListening ? "#23C86F" : "#404040",
-                paddingVertical: 5,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                elevation: 4,
-                borderRadius: 20,
-                marginTop: 20,
-                marginHorizontal: 25,
-                width: "85%",
-              }}
-              onPress={() => {
-                navigate("FirstStamp");
-              }}
-              disabled={!isFinishedListening}
-            >
-              <Text
-                style={{
-                  color: isFinishedListening ? "#FFFFFF" : "#141B23",
-                  fontWeight: "bold",
-                  fontSize: 20,
-                }}
-              >
-                CONTINUAR
-              </Text>
-            </Pressable>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView style={{ backgroundColor: "#141B23", flex: 1 }}>
-      <ScrollView>
-        <View
-          style={{
-            display: "flex",
-            width: "100%",
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 32,
-          }}
-        >
-          <ProgressBar
-            totalQuestions={totalQuestions}
-            correctAnswers={correctAnswers}
-          />
-          <View style={{ width: "100%", marginLeft: 30 }}>
-            <Text
-              style={{
-                color: "#FFFFFF",
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
-            >
-              Complete as frases:
-            </Text>
-          </View>
-          <View style={{ alignItems: "center", gap: 8 }}>
-            {questions.map((question, index) => {
-              const isQuestionAnswered = questionIdsAnsweredCorrectly.find(
-                ({ id }) => question.id === id
-              );
-              return (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 8,
-                  }}
-                  key={question.id}
-                >
-                  <Text style={{ color: "#FFFFFF", fontSize: 20 }}>
-                    {question.text1}
-                  </Text>
-                  <View
-                    style={{
-                      minWidth: CIRCLE_RADIUS * 2,
-                      height: CIRCLE_RADIUS,
-                      borderRadius: CIRCLE_RADIUS,
-                      borderColor: isQuestionAnswered ? "#23C86F" : "#F5F5F5",
-                      borderWidth: 1,
-                      marginBottom: 5,
-                      backgroundColor: isQuestionAnswered
-                        ? "#23C86F"
-                        : "inherit",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    ref={dropZoneRefs.current[index]}
-                    onLayout={(event) => handleDropAreaLayout(event, index)}
-                    key={index}
-                  >
-                    {isQuestionAnswered && (
-                      <Text
-                        style={{
-                          color: "#F5F5F5",
-                          fontSize: 20,
-                          fontWeight: 600,
-                          paddingHorizontal: 10,
-                        }}
-                      >
-                        {question.correctAnswer}
-                      </Text>
-                    )}
-                  </View>
-                  <Text style={{ color: "#FFFFFF", fontSize: 20 }}>
-                    {question.text2}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
-          {!isFinished && (
-            <View style={{ flexGrow: 1, marginBottom: 20 }}>
-              <View style={styles.row}>
-                {answers.map((answer, index) => (
-                  <Draggable
-                    text={answer.text}
-                    containerPosition={containerPositions[answer.id]}
-                    key={answer.id}
-                    onCorrectAnswer={() => onCorrectAnswer(answer.id)}
-                    onWrongAnswer={onWrongAnswer}
-                  />
-                ))}
-              </View>
-            </View>
-          )}
-        </View>
-      </ScrollView>
-      {showCorrectMessage && (
-        <View
-          style={{
-            display: "flex",
-            gap: 2,
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            paddingLeft: 20,
-            paddingVertical: 10,
-            backgroundColor: "#23C86F",
-          }}
-        >
-          <Ionicons name="checkmark-circle" color="white" size={24} />
-          <Text style={{ flex: 1, color: "white", fontWeight: 500 }}>
-            C'est correct!
-          </Text>
-        </View>
-      )}
-      {showWrongMessage && (
-        <View
-          style={{
-            display: "flex",
-            gap: 2,
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-            backgroundColor: "#E35051",
-            paddingLeft: 20,
-            paddingVertical: 10,
-          }}
-        >
-          <Ionicons name="close-circle" color="white" size={24} />
-          <Text style={{ flex: 1, color: "white", fontWeight: 500 }}>
-            C'est incorrect...
-          </Text>
-        </View>
-      )}
-    </SafeAreaView>
-  );
-};
-
-const ProgressBar = ({ totalQuestions, correctAnswers }) => {
-  const progress = correctAnswers / totalQuestions;
-
-  return (
-    <View
-      style={{
-        height: 14,
-        width: "95%",
-        backgroundColor: "#393B57",
-        borderRadius: 10,
-        overflow: "hidden",
-        marginVertical: 10,
-        flex: 1,
-      }}
-    >
-      <View style={[styles.progressBar, { width: `${progress * 100}%` }]} />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    marginTop: 20,
-  },
-  ballContainer: {
-    height: 150,
-  },
-  row: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
-    justifyContent: "center",
-  },
-  dropZone: {
-    height: 200,
-    backgroundColor: "#00334d",
-  },
-  text: {
-    padding: 25,
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 25,
-    fontWeight: "bold",
-  },
+const styles = {
   container: {
-    flex: 1,
-    backgroundColor: "#f0f0f0",
-    padding: 16,
-    marginTop: 50,
+    height: 300,
+    marginBottom: -20,
   },
-  questionsContainer: {
-    flex: 2,
-    marginBottom: 20,
+  backgroundImage: {
+    height: "100%",
+    width: "100%",
+    zIndex: 10,
   },
-  questionBox: {
-    marginBottom: 16,
-  },
-  questionText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  defaultDropZone: {
-    borderWidth: 1,
-    borderColor: "#000",
-  },
-  correctDropZone: {
-    borderWidth: 2,
-    borderColor: "green",
-  },
-  answersContainer: {
-    flex: 1,
+  headerContainer: {
+    marginLeft: 10,
+    width: "100%",
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center",
   },
-  draggable: {
-    width: 100,
-    height: 50,
-    backgroundColor: "#007AFF",
+  backButtonContainer: {
+    marginTop: StatusBar.currentHeight + 25 || 25,
+    display: "flex",
+    flexDirection: "row",
+    gap: 2,
+  },
+  backButtonText: {
+    color: "#4354EF",
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  verbContainer: {},
+  verbText: {
+    color: "#4354EF",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  verbNumber: {
+    color: "#4354EF",
+    fontWeight: "bold",
+    marginBottom: 30,
+    fontSize: 16,
+  },
+  verbTitle: {
+    color: "#4354EF",
+    fontWeight: "900",
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  volumeButtonContainer: {
+    marginTop: StatusBar.height + 100 || 100,
+  },
+  tabButton: (isActive) => ({
+    backgroundColor: isActive ? "#4354EF" : "#F5F5F5",
+    borderRadius: 20,
+    elevation: 4,
+    paddingVertical: 5,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
-  },
-  answerText: {
-    color: "#fff",
+    width: 165,
+    marginBottom: 10,
+  }),
+  tabButtonText: (isActive) => ({
+    color: isActive ? "#FFFFFF" : "#D9D9D9",
+    fontSize: 16,
     fontWeight: "bold",
-  },
-  progressBarContainer: {
-    height: 20,
-    width: "80%",
-    backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    overflow: "hidden",
-    marginVertical: 10,
-  },
-  progressBar: {
-    height: "100%",
-    backgroundColor: "#23C86F",
-  },
-});
+  }),
+};
 
 export default Exercise;
