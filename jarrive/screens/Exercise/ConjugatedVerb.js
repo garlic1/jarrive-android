@@ -4,7 +4,7 @@ export const ConjugatedVerb = ({ pronoun, conjugation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.pronounContainer}>
-        <Text style={styles.pronounText}>{pronoun}</Text>
+        <Text style={styles.pronounText}>{pronoun}{" "}</Text>
       </View>
       <View style={styles.conjugationContainer}>
         <Text style={styles.conjugationText}>{conjugation}</Text>

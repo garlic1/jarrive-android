@@ -21,6 +21,8 @@ import VolumeButton from "../../components/VolumeButton";
 const StampScreen = ({ navigation }) => {
   const [flip, setFlip] = useState(false);
   const [activeTab, setActiveTab] = useState("selos");
+  const [titleContainerHeight, setTitleContainerHeight] = useState(null);
+  const [buttonsContainerHeight, setButtonsContainerHeight] = useState(null);
 
   const flipAnim = useRef(new Animated.Value(0)).current;
 
@@ -77,6 +79,10 @@ const StampScreen = ({ navigation }) => {
                 source={cartePostaleFront}
                 style={styles.cartePostaleImage}
                 resizeMode="contain"
+                onLayout={({ nativeEvent }) => {
+                  const { x, y, width, height } = nativeEvent.layout;
+                  setTitleContainerHeight(height);
+                }}
               />
             </Animated.View>
             <Animated.View
@@ -94,7 +100,14 @@ const StampScreen = ({ navigation }) => {
                 resizeMode="contain"
               />
             </Animated.View>
-            <View style={styles.cartePostaleContainer} />
+          </View>
+          <View
+            style={styles.container(titleContainerHeight)}
+            onLayout={({ nativeEvent }) => {
+              const { x, y, width, height } = nativeEvent.layout;
+              setButtonsContainerHeight(height);
+            }}
+          >
             <Pressable onPress={flipCard} style={styles.flipCardButton}>
               <View style={styles.flipCardContainer}>
                 <Ionicons
@@ -110,8 +123,6 @@ const StampScreen = ({ navigation }) => {
                 />
               </View>
             </Pressable>
-          </View>
-          <View>
             <View style={styles.tabsContainer}>
               <Pressable
                 style={styles.tabButton(activeTab === "selos")}
@@ -133,7 +144,7 @@ const StampScreen = ({ navigation }) => {
           </View>
         </ImageBackground>
       </View>
-      <View style={styles.container}>
+      <View style={styles.container(buttonsContainerHeight + StatusBar.currentHeight + 10)}>
         {activeTab === "mensagem" && <MessageTab />}
         {activeTab === "selos" && <StampsTab navigation={navigation} />}
       </View>
@@ -149,9 +160,9 @@ const StampScreen = ({ navigation }) => {
 };
 
 const styles = {
-  container: {
-    marginTop: 150,
-  },
+  container: (height) => ({
+    marginTop: height,
+  }),
   header: {
     backgroundColor: "#2C327E",
     height: 300,

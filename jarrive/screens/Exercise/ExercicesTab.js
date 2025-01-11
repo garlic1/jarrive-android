@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, SafeAreaView } from "react-native";
+import { Text, View, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, {
   createRef,
@@ -37,10 +37,11 @@ export const ExercicesTab = ({ navigate }) => {
       if (dropZoneRefs.current[index]) {
         dropZoneRefs.current[index].current.measureInWindow(
           (x, y, width, height) => {
-            setContainerPositions((containerPositions) => [
-              ...containerPositions,
-              { x, y, width, height },
-            ]);
+            setContainerPositions((prevPositions) => {
+              const newPositions = [...prevPositions];
+              newPositions[index] = { x, y: y + StatusBar.currentHeight, width, height  };
+              return newPositions;
+            });
           }
         );
       }
