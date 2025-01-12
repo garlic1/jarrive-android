@@ -26,7 +26,7 @@ const ChatBody = ({ messages, getCurrentMessage }) => {
       style={{
         flex: 1,
       }}
-      onLayout={() => start()}
+      onLayout={() => setTimeout(() => start(),2000)}
     >
       <FlatList
         data={Object.keys(messages).reverse()}

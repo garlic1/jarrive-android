@@ -4,13 +4,14 @@ import ChatInput from "./ChatInput";
 import thomas from "../../assets/thomas.jpg";
 import MESSAGES_CONST from "../../utils/messages.json";
 import { Pressable } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useMessages from "../../hooks/useMessages";
 import { MessagesContext } from "../../context/MessagesContext";
 
 const Chat = () => {
   const [userInput, setUserInput] = useState("");
-  const { messages, currentMessage } = useContext(MessagesContext);
+  const { messages, currentMessage, previousMessage } =
+    useContext(MessagesContext);
 
   const { getCurrentMessage } = useMessages();
 
@@ -27,7 +28,22 @@ const Chat = () => {
 
   const disableUserInput =
     MESSAGES_CONST[currentMessage]?.variant !== "input" ||
-    MESSAGES_CONST[currentMessage]?.content;
+    !!MESSAGES_CONST[currentMessage]?.content;
+
+  const enableGetMessage =
+    disableUserInput &&
+    MESSAGES_CONST[previousMessage]?.variant !== "choice" &&
+    MESSAGES_CONST[currentMessage]?.variant;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (enableGetMessage) {
+        getCurrentMessage();
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [enableGetMessage, getCurrentMessage, currentMessage, previousMessage]);
 
   return (
     <>

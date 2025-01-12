@@ -49,6 +49,7 @@ const styles = {
     height: "100%",
     width: "100%",
     alignItems: "center",
+    flexGrow: 1
   },
   logo: {
     marginTop: 50,
@@ -60,6 +61,7 @@ const styles = {
     borderRadius: 10,
     paddingVertical: 32,
     alignItems: "center",
+    flexGrow: 1
   },
   headingText: {
     fontWeight: "bold",
