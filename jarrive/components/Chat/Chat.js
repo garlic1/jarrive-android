@@ -47,13 +47,11 @@ const Chat = () => {
 
   return (
     <>
-      <Pressable onPress={() => getCurrentMessage()}>
-        <ChatHeader
-          profileImage={thomas}
-          name={"Issa - Le tuteur de Thomas"}
-          status={"en écrivant..."}
-        />
-      </Pressable>
+      <ChatHeader
+        profileImage={thomas}
+        name={"Issa - Le tuteur de Thomas"}
+        status={"en écrivant..."}
+      />
       <ChatBody messages={messages} getCurrentMessage={getCurrentMessage} />
       <ChatInput
         onChangeUserInput={onChangeUserInput}
